@@ -233,7 +233,7 @@ Egy eseményre kattintva megjelenik:
 | Prioritás | Stratégia | Leírás |
 |-----------|-----------|--------|
 | **1. (elsődleges)** | Event aggregátor API-k | Ticketmaster, TicketSwap(?), Eventbrite — strukturált, megbízható adat |
-| **2. (kiegészítő)** | RSS feedek | Városi kulturális oldalak, önkormányzati hírek | WELOVEBUDAPEST
+| **2. (kiegészítő)** | RSS feedek | Városi kulturális oldalak, önkormányzati hírek, WELOVEBUDAPEST | 
 | **3. (fallback)** | Manuális admin feltöltés | Ha API-ból nem érkezik elég adat |
 
 > **Scraping és AI-alapú entitáskinyerés** a Phase 2-re marad — az MVP-ben csak strukturált API/RSS adatokkal dolgozunk.
