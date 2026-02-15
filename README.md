@@ -232,8 +232,8 @@ Egy eseményre kattintva megjelenik:
 
 | Prioritás | Stratégia | Leírás |
 |-----------|-----------|--------|
-| **1. (elsődleges)** | Event aggregátor API-k | Ticketmaster, Eventbrite — strukturált, megbízható adat |
-| **2. (kiegészítő)** | RSS feedek | Városi kulturális oldalak, önkormányzati hírek |
+| **1. (elsődleges)** | Event aggregátor API-k | Ticketmaster, TicketSwap(?), Eventbrite — strukturált, megbízható adat |
+| **2. (kiegészítő)** | RSS feedek | Városi kulturális oldalak, önkormányzati hírek | WELOVEBUDAPEST
 | **3. (fallback)** | Manuális admin feltöltés | Ha API-ból nem érkezik elég adat |
 
 > **Scraping és AI-alapú entitáskinyerés** a Phase 2-re marad — az MVP-ben csak strukturált API/RSS adatokkal dolgozunk.
@@ -265,16 +265,16 @@ Ha egy adatforrás elérhetetlenné válik (API limit, feed megszűnés):
                            └──────────────────┘
 
 ┌──────────────────┐       ┌──────────────────┐
-│  Külső API-k     │──────►│ Collector        │──────► Database
-│  (Ticketmaster,  │       │ Service          │        (pending)
-│   Eventbrite,    │       │ (Node.js cron)   │
-│   RSS feedek)    │       │                  │
+│  Külső API-k     │──────►│ Collector        │──────► Database (csak events táblába ír, és csak upsertel) 
+│  (Ticketmaster,  │       │ Service          │        ötlet 2: Collector nem ir DB-t hanem backendnek küld 
+│   Eventbrite,    │       │ (Node.js cron)   │        (deduplikált event kezelés)
+│   RSS feedek)    │       │ ütemezett/scheduler │
 └──────────────────┘       └──────────────────┘
 
 ┌──────────────────┐
 │  Google Maps API │◄────── Frontend (térkép)
 │  Google Geocoding│◄────── Collector (cím → koordináta)
-│  SendGrid        │◄────── Backend (heti ajánló e-mail)
+│  SendGrid        │◄────── Backend (heti ajánló e-mail) ///  DURI: ez legyen + feature, vagy v2-es mert bonyi 
 └──────────────────┘
 ```
 
