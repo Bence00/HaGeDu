@@ -62,3 +62,29 @@
 
 {...}
 
+## Technology Stack 
+
+- Frontend:
+  - Next.js 14 (App Router)
+  - TypeScript
+  - TanStack Query 
+  - hadcn/ui
+  - Hey API (ha OpenAPI spec van)
+- Backend: 
+	- Database:
+- Version Control: Git / GitHub
+- Deployment Environment: {...}
+- External APIs: {...}
+
+## System Architecture (High-Level)
+
+The system follows a client-server architecture.
+The frontend communicates with the backend via REST API.
+The backend handles business logic and database communication.
+
+## Target Environment
+
+- Web browser-based application.
+- Desktop and mobile devices supported.
+- Requires internet connection.
+

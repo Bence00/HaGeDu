@@ -7,5 +7,6 @@ This project is an academic exercise as part of a university course (Software En
 docs/
 ├── README.md
 ├── rules.md
+├── DocUpdates.md
 └── SRS.md
 ```

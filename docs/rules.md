@@ -32,7 +32,7 @@ Célunk a tanulás és ez a folyamat segíteni fog abban, hogy megtapasztaljuk a
 #### formára vonatkozóan:
 - Mindent angol nyelven íródik.
 - A dokumentáció alapvetően verziókezelve van, de minden szerkesztő **kötelezettsége**, hogy a változtatásokat a sor elején/bekezdés elején **időbélyeggel jelölje**, a következő formátumban: `[YYYY.MM.DD;HH:MM]`, erre kitalálhatunk jobb megoldást is ha ez így nem kielégítő vagy formailag zavaró. Kivételek jelölve vannak!
- - Formai vagy stuktura módosítás esetén minden korábban más módszerrel alkalmazott verziót frissíteni kell az új szabály szerint, hogy az **egységesség megmaradjon.
+ - Formai vagy stuktura módosítás esetén minden korábban más módszerrel alkalmazott verziót frissíteni kell az új szabály szerint, hogy az **egységesség megmaradjon.**
  - Minden részhez előre meghatározott váz tartozik ezt köteles követni a szerkesztő.
  - Lehet használni \**példa\**  kijelölést hogy szavakat részeket emeljünk ki könnyebb olvashatóság érdekében.
 - {...}
