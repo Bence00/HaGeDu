@@ -1,0 +1,18 @@
+# Függőségek
+node_modules/
+
+# Környezeti változók (titkos adatok!)
+.env
+backend/.env
+frontend/.env
+
+# Vite build kimenet
+frontend/dist/
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Editorsok
+.vscode/
+.idea/
