@@ -43,11 +43,13 @@ async function login(req, res, next) {
     }
 
     const user = await userModel.findByEmail(email);
+    console.log('[login] email:', JSON.stringify(email), '| user found:', !!user);
     if (!user) {
       return res.status(401).json({ error: 'Hibás email cím vagy jelszó' });
     }
 
     const valid = await bcrypt.compare(password, user.password);
+    console.log('[login] password valid:', valid);
     if (!valid) {
       return res.status(401).json({ error: 'Hibás email cím vagy jelszó' });
     }

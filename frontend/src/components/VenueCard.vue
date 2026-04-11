@@ -1,42 +1,27 @@
 <template>
   <div class="venue-card">
-    <div class="card-header">
+    <div class="card-top">
+      <div class="venue-icon">🏛</div>
       <h3 class="venue-name">{{ venue.name }}</h3>
     </div>
 
-    <div class="card-body">
-      <div class="ticket-links">
-        <a
-          v-if="venue.tixa_url"
-          :href="venue.tixa_url"
-          target="_blank"
-          rel="noopener noreferrer"
-          class="ticket-link tixa"
-        >Tixa</a>
-        <a
-          v-if="venue.ticketswap_url"
-          :href="venue.ticketswap_url"
-          target="_blank"
-          rel="noopener noreferrer"
-          class="ticket-link ticketswap"
-        >TicketSwap</a>
-        <a
-          v-if="venue.bandsintown_url"
-          :href="venue.bandsintown_url"
-          target="_blank"
-          rel="noopener noreferrer"
-          class="ticket-link bandsintown"
-        >Bandsintown</a>
-      </div>
+    <div class="ticket-links">
+      <a v-if="venue.tixa_url"        :href="venue.tixa_url"        target="_blank" rel="noopener" class="chip chip-tixa">Tixa</a>
+      <a v-if="venue.ticketswap_url"  :href="venue.ticketswap_url"  target="_blank" rel="noopener" class="chip chip-swap">TicketSwap</a>
+      <a v-if="venue.bandsintown_url" :href="venue.bandsintown_url" target="_blank" rel="noopener" class="chip chip-bands">Bandsintown</a>
+      <span v-if="!venue.tixa_url && !venue.ticketswap_url && !venue.bandsintown_url" class="chip chip-empty">
+        Nincs link
+      </span>
     </div>
 
     <div class="card-footer" v-if="showSave">
       <button
-        class="btn btn-outline btn-sm save-btn"
+        class="save-btn"
         :class="{ saved: isSaved }"
         @click="$emit('toggle-save', venue)"
       >
-        {{ isSaved ? '★ Mentve' : '☆ Mentés' }}
+        <span class="save-icon">{{ isSaved ? '★' : '☆' }}</span>
+        {{ isSaved ? 'Mentve' : 'Mentés' }}
       </button>
     </div>
   </div>
@@ -53,65 +38,89 @@ defineEmits(['toggle-save'])
 
 <style scoped>
 .venue-card {
-  background: var(--color-surface);
-  border: 1px solid var(--color-border);
+  background: var(--surface);
+  border: 1px solid var(--border);
   border-radius: var(--radius);
-  box-shadow: var(--shadow);
+  padding: 1.4rem;
   display: flex;
   flex-direction: column;
-  overflow: hidden;
-  transition: box-shadow 0.2s, transform 0.2s;
+  gap: 1rem;
+  transition: transform 0.2s, box-shadow 0.2s;
+  box-shadow: var(--shadow-sm);
 }
 .venue-card:hover {
-  box-shadow: var(--shadow-md);
-  transform: translateY(-2px);
+  transform: translateY(-4px);
+  box-shadow: var(--shadow);
 }
 
-.card-header {
-  padding: 1rem 1.25rem 0.75rem;
-  border-bottom: 1px solid var(--color-border);
+.card-top {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.85rem;
+}
+
+.venue-icon {
+  width: 42px;
+  height: 42px;
+  border-radius: 10px;
+  background: var(--primary-light);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.2rem;
+  flex-shrink: 0;
 }
 
 .venue-name {
-  font-size: 1rem;
+  font-size: 0.975rem;
   font-weight: 600;
-  color: var(--color-text);
+  color: var(--text);
   line-height: 1.4;
-}
-
-.card-body {
-  padding: 0.875rem 1.25rem;
-  flex: 1;
+  padding-top: 0.15rem;
 }
 
 .ticket-links {
   display: flex;
   flex-wrap: wrap;
-  gap: 0.5rem;
+  gap: 0.4rem;
 }
 
-.ticket-link {
-  font-size: 0.8rem;
-  font-weight: 500;
+.chip {
+  font-size: 0.75rem;
+  font-weight: 600;
   padding: 0.3rem 0.75rem;
   border-radius: 99px;
   text-decoration: none;
-  transition: opacity 0.15s;
+  transition: opacity 0.15s, transform 0.15s;
+  display: inline-block;
 }
-.ticket-link:hover { opacity: 0.8; text-decoration: none; }
+.chip:hover { opacity: 0.8; transform: scale(1.03); text-decoration: none; }
 
-.tixa        { background: #fef9c3; color: #713f12; }
-.ticketswap  { background: #dbeafe; color: #1e3a8a; }
-.bandsintown { background: #fce7f3; color: #831843; }
+.chip-tixa   { background: #fef9c3; color: #854d0e; }
+.chip-swap   { background: #dbeafe; color: #1e40af; }
+.chip-bands  { background: #fce7f3; color: #9d174d; }
+.chip-empty  { background: var(--surface-2); color: var(--text-muted); }
 
 .card-footer {
-  padding: 0.75rem 1.25rem;
-  border-top: 1px solid var(--color-border);
+  margin-top: auto;
+  padding-top: 0.5rem;
+  border-top: 1px solid var(--border);
 }
 
-.save-btn.saved {
-  background: #eff6ff;
-  color: var(--color-primary);
-  border-color: var(--color-primary);
+.save-btn {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  font-size: 0.825rem;
+  font-weight: 600;
+  color: var(--text-muted);
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 0;
+  transition: color 0.15s;
 }
+.save-btn:hover { color: var(--primary); }
+.save-btn.saved { color: var(--primary); }
+.save-icon { font-size: 1rem; }
 </style>
