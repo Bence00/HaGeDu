@@ -1,8 +1,17 @@
-# HaGeDu
+# HaGeDu - Budapest Event Aggregator
 
-## For Users
+Aggregates ~40 Budapest venues across Tixa, TicketSwap, and Bandsintown into a single web app.
 
-Run the application with Docker:
+## Tech Stack
+
+| Layer | Technology |
+|-------|------------|
+| Backend | Node.js + Express |
+| Database | MySQL 8 |
+| Auth | JWT (`jsonwebtoken` + `bcryptjs`) |
+| Frontend | Vue.js 3, Vue Router, Axios, Vite |
+
+## Quick Start (Docker)
 
 ```bash
 cp .env.example .env
@@ -20,4 +29,3 @@ Stop:
 ```bash
 docker compose down
 ```
-
