@@ -60,7 +60,7 @@ const initials = computed(() => {
 async function fetchSaved() {
   loading.value = true
   try {
-    const { data } = await api.get('/favorites')
+    const { data } = await api.get('/venues/favorites')
     saved.value = data
   } catch {
     // Favorites endpoint may not exist yet
@@ -72,7 +72,7 @@ async function fetchSaved() {
 
 async function removeSaved(venue) {
   try {
-    await api.delete(`/favorites/${venue.id}`)
+    await api.delete(`/venues/favorites/${venue.id}`)
     saved.value = saved.value.filter(v => v.id !== venue.id)
   } catch {
     // Silently ignore

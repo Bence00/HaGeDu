@@ -99,8 +99,9 @@ async function fetchVenues() {
 async function fetchSaved() {
   if (!authStore.isLoggedIn) return
   try {
-    const { data } = await api.get('/favorites')
-    savedIds.value = new Set(data.map(f => f.venue_id))
+    const { data } = await api.get('/venues/favorites')
+    // Backend returns venue objects directly, so key by id
+    savedIds.value = new Set(data.map(v => v.id))
   } catch {
     // Favorites not critical — silently ignore
   }
@@ -110,10 +111,10 @@ async function toggleSave(venue) {
   const alreadySaved = savedIds.value.has(venue.id)
   try {
     if (alreadySaved) {
-      await api.delete(`/favorites/${venue.id}`)
+      await api.delete(`/venues/favorites/${venue.id}`)
       savedIds.value.delete(venue.id)
     } else {
-      await api.post('/favorites', { venue_id: venue.id })
+      await api.post('/venues/favorites', { venue_id: venue.id })
       savedIds.value.add(venue.id)
     }
     // Trigger reactivity by re-assigning
