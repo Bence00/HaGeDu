@@ -1,5 +1,5 @@
-CREATE DATABASE IF NOT EXISTS hagedy CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
-USE hagedy;
+CREATE DATABASE IF NOT EXISTS hagedu CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+USE hagedu;
 
 -- Felhasználók
 CREATE TABLE IF NOT EXISTS users (

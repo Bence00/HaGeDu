@@ -1,38 +1,82 @@
-# HaGeDu — Budapest esemény aggregátor
+# HaGeDu — Budapest Event Aggregator
 
-**HaGeDu** (~40) budapesti rendezvényhelyszín jegyplatform-jelenlétét gyűjti össze egyetlen webalkalmazásba.  
-A felhasználók böngészhetnek a helyszínek között, megnézhetik melyik platformon (Tixa, TicketSwap, Bandsintown) érhetők el, kedvenceket menthetnek, és közvetlenül a vásárlási oldalra navigálhatnak.
+Aggregates ~40 Budapest venues across Tixa, TicketSwap, and Bandsintown into a single web app.
 
-## Technológiai stack
+## Tech Stack
 
-| Réteg    | Technológia                         |
-|----------|-------------------------------------|
-| Frontend | Vue.js 3 + Composition API, Pinia, Vue Router, Axios, Vite |
-| Backend  | Node.js + Express                   |
-| Adatbázis | MySQL 8                            |
-| Auth     | JWT (jsonwebtoken + bcryptjs)        |
+| Layer    | Technology                              |
+|----------|-----------------------------------------|
+| Backend  | Node.js + Express                       |
+| Database | MySQL 8                                 |
+| Auth     | JWT (jsonwebtoken + bcryptjs)           |
+| Frontend | Vue.js 3, Vue Router, Axios, Vite *(planned)* |
 
-## Dokumentáció
+## Quick Start (Docker)
 
-- [Felhasználói útmutató](docs/user-guide.md)
-- [Fejlesztői dokumentáció](docs/developer-guide.md)
-
-## Gyors indítás
+**Requirements:** Docker + Docker Compose
 
 ```bash
-# Backend
+cp .env.example .env
+docker compose up --build
+```
+
+- Backend: http://localhost:3000
+- Database: localhost:3306
+
+### Seed the database
+
+After containers are up:
+
+```bash
+docker compose exec backend node db/seed.js
+```
+
+### Stop
+
+```bash
+docker compose down
+```
+
+To also delete the database volume:
+
+```bash
+docker compose down -v
+```
+
+## Project Structure
+
+```
+HaGeDu/
+├── backend/         Node.js + Express API
+│   ├── db/          schema.sql + seed.js
+│   ├── src/         app, routes, controllers, middleware, models
+│   └── Dockerfile
+├── frontend/        Vue.js 3 SPA — not implemented yet
+│   └── Dockerfile
+├── docs/            SRS, use cases, rules
+├── docker-compose.yml
+└── .env.example
+```
+
+## Frontend (Planned)
+
+The `frontend/` directory is a placeholder for a Vue.js 3 SPA.
+Planned stack: Vue 3 + Vue Router + Axios + Vite.
+
+To enable it once implemented, uncomment the `frontend` service in `docker-compose.yml`.
+
+## Local Development (without Docker)
+
+```bash
 cd backend
-cp .env.example .env   # Töltsd ki az adatbázis adatokat és JWT_SECRET-et
+cp .env.example .env   # set DB_HOST=localhost
 npm install
 mysql -u root -p < db/schema.sql
 npm run seed
 npm run dev
-
-# Frontend (új terminálban)
-cd frontend
-npm install
-npm run dev
 ```
 
-Backend: `http://localhost:3000`  
-Frontend: `http://localhost:5173`
+## Environment Variables
+
+See `.env.example` for all required variables.
+Copy it to `.env` and fill in your values before running.
