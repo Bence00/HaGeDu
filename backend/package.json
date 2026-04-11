@@ -1,5 +1,5 @@
 {
-  "name": "hagedy-backend",
+  "name": "hagedu-backend",
   "version": "1.0.0",
   "description": "HaGeDu Budapest esemény aggregátor — backend",
   "main": "server.js",
