@@ -34,14 +34,19 @@
 
         <div class="form-group">
           <label for="password">Jelszó</label>
-          <input
-            id="password"
-            v-model="form.password"
-            type="password"
-            placeholder="Minimum 6 karakter"
-            autocomplete="new-password"
-            required
-          />
+          <div class="input-wrap">
+            <input
+              id="password"
+              v-model="form.password"
+              :type="showPassword ? 'text' : 'password'"
+              placeholder="Minimum 6 karakter"
+              autocomplete="new-password"
+              required
+            />
+            <button type="button" class="toggle-pw" @click="showPassword = !showPassword">
+              {{ showPassword ? 'Elrejt' : 'Mutat' }}
+            </button>
+          </div>
           <span class="field-hint">Legalább 6 karakter.</span>
         </div>
 
@@ -65,10 +70,11 @@ import { register } from '../services/authService'
 
 const router = useRouter()
 
-const form    = reactive({ username: '', email: '', password: '' })
-const loading = ref(false)
-const error   = ref(null)
-const success = ref(null)
+const form         = reactive({ username: '', email: '', password: '' })
+const loading      = ref(false)
+const error        = ref(null)
+const success      = ref(null)
+const showPassword = ref(false)
 
 async function handleRegister() {
   error.value   = null
@@ -76,7 +82,7 @@ async function handleRegister() {
   loading.value = true
 
   try {
-    await register(form.username, form.email, form.password)
+    await register(form.username.trim(), form.email.trim(), form.password)
     success.value = 'Sikeres regisztráció! Átirányítás a bejelentkezéshez...'
     setTimeout(() => router.push('/login'), 1500)
   } catch (err) {
@@ -121,6 +127,30 @@ async function handleRegister() {
   display: flex;
   flex-direction: column;
   gap: 1rem;
+}
+
+.input-wrap {
+  position: relative;
+  display: flex;
+}
+
+.input-wrap input {
+  flex: 1;
+  padding-right: 5rem;
+}
+
+.toggle-pw {
+  position: absolute;
+  right: 0.75rem;
+  top: 50%;
+  transform: translateY(-50%);
+  background: none;
+  border: none;
+  color: var(--color-primary);
+  font-size: 0.8rem;
+  font-weight: 500;
+  cursor: pointer;
+  padding: 0;
 }
 
 .field-hint {

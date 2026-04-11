@@ -21,14 +21,19 @@
 
         <div class="form-group">
           <label for="password">Jelszó</label>
-          <input
-            id="password"
-            v-model="form.password"
-            type="password"
-            placeholder="••••••"
-            autocomplete="current-password"
-            required
-          />
+          <div class="input-wrap">
+            <input
+              id="password"
+              v-model="form.password"
+              :type="showPassword ? 'text' : 'password'"
+              placeholder="••••••"
+              autocomplete="current-password"
+              required
+            />
+            <button type="button" class="toggle-pw" @click="showPassword = !showPassword">
+              {{ showPassword ? 'Elrejt' : 'Mutat' }}
+            </button>
+          </div>
         </div>
 
         <button type="submit" class="btn btn-primary btn-full" :disabled="loading">
@@ -52,17 +57,17 @@ import { login } from '../services/authService'
 const router = useRouter()
 const route  = useRoute()
 
-const form    = reactive({ email: '', password: '' })
-const loading = ref(false)
-const error   = ref(null)
+const form         = reactive({ email: '', password: '' })
+const loading      = ref(false)
+const error        = ref(null)
+const showPassword = ref(false)
 
 async function handleLogin() {
   error.value   = null
   loading.value = true
 
   try {
-    await login(form.email, form.password)
-    // Redirect to the page the user was trying to access, or home
+    await login(form.email.trim(), form.password)
     const redirect = route.query.redirect || '/'
     router.push(redirect)
   } catch (err) {
@@ -107,6 +112,30 @@ async function handleLogin() {
   display: flex;
   flex-direction: column;
   gap: 1rem;
+}
+
+.input-wrap {
+  position: relative;
+  display: flex;
+}
+
+.input-wrap input {
+  flex: 1;
+  padding-right: 5rem;
+}
+
+.toggle-pw {
+  position: absolute;
+  right: 0.75rem;
+  top: 50%;
+  transform: translateY(-50%);
+  background: none;
+  border: none;
+  color: var(--color-primary);
+  font-size: 0.8rem;
+  font-weight: 500;
+  cursor: pointer;
+  padding: 0;
 }
 
 .btn-full {
