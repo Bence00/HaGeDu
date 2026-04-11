@@ -5,7 +5,8 @@ const app     = express();
 app.use(cors({ origin: process.env.FRONTEND_URL || 'http://localhost:5173' }));
 app.use(express.json());
 
-app.use('/api/auth', require('./routes/auth'));
+app.use('/api/auth',   require('./routes/auth'));
+app.use('/api/venues', require('./routes/venues'));
 
 // Globális hibakezelő
 app.use((err, req, res, next) => {

@@ -30,12 +30,15 @@ services:
       db:
         condition: service_healthy
 
-  # frontend:
-  #   build: ./frontend
-  #   ports:
-  #     - "5173:5173"
-  #   depends_on:
-  #     - backend
+  frontend:
+    build: ./frontend
+    environment:
+      # Browser calls the backend's exposed port directly (no proxy needed inside Docker)
+      VITE_API_URL: http://localhost:3000/api
+    ports:
+      - "5173:5173"
+    depends_on:
+      - backend
 
 volumes:
   db_data:
