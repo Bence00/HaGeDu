@@ -1,8 +1,8 @@
 import api from './api'
 import { authStore } from '../stores/auth'
 
-export async function login(email, password) {
-  const { data } = await api.post('/auth/login', { email, password })
+export async function login(identifier, password) {
+  const { data } = await api.post('/auth/login', { identifier, password })
   authStore.setAuth(data.token, data.user)
   return data.user
 }

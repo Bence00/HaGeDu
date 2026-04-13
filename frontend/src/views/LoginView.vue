@@ -23,8 +23,8 @@
 
         <form @submit.prevent="handleLogin" class="auth-form" novalidate>
           <div class="form-group">
-            <label for="email">Email cím</label>
-            <input id="email" v-model="form.email" type="email" placeholder="pelda@email.hu" autocomplete="email" required />
+            <label for="identifier">Email cím vagy felhasználónév</label>
+            <input id="identifier" v-model="form.identifier" type="text" placeholder="pelda@email.hu vagy felhasználónév" autocomplete="username" required />
           </div>
 
           <div class="form-group">
@@ -65,7 +65,7 @@ import { login } from '../services/authService'
 const router = useRouter()
 const route  = useRoute()
 
-const form    = reactive({ email: '', password: '' })
+const form    = reactive({ identifier: '', password: '' })
 const loading = ref(false)
 const error   = ref(null)
 const showPw  = ref(false)
@@ -74,7 +74,7 @@ async function handleLogin() {
   error.value   = null
   loading.value = true
   try {
-    await login(form.email.trim(), form.password)
+    await login(form.identifier.trim(), form.password)
     router.push(route.query.redirect || '/')
   } catch (err) {
     error.value = err.response?.data?.error || 'Bejelentkezési hiba. Kérjük próbáld újra.'
