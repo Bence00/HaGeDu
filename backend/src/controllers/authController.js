@@ -36,22 +36,25 @@ async function register(req, res, next) {
 
 async function login(req, res, next) {
   try {
-    const { email, password } = req.body;
+    const { identifier, password } = req.body;
 
-    if (!email || !password) {
-      return res.status(400).json({ error: 'Email és jelszó megadása kötelező' });
+    if (!identifier || !password) {
+      return res.status(400).json({ error: 'Email/felhasználónév és jelszó megadása kötelező' });
     }
 
-    const user = await userModel.findByEmail(email);
-    console.log('[login] email:', JSON.stringify(email), '| user found:', !!user);
+    const isEmail = EMAIL_REGEX.test(identifier);
+    const user = isEmail
+      ? await userModel.findByEmail(identifier)
+      : await userModel.findByUsername(identifier);
+    console.log('[login] identifier:', JSON.stringify(identifier), '| isEmail:', isEmail, '| user found:', !!user);
     if (!user) {
-      return res.status(401).json({ error: 'Hibás email cím vagy jelszó' });
+      return res.status(401).json({ error: 'Hibás email cím / felhasználónév vagy jelszó' });
     }
 
     const valid = await bcrypt.compare(password, user.password);
     console.log('[login] password valid:', valid);
     if (!valid) {
-      return res.status(401).json({ error: 'Hibás email cím vagy jelszó' });
+      return res.status(401).json({ error: 'Hibás email cím / felhasználónév vagy jelszó' });
     }
 
     const token = jwt.sign(
