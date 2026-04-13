@@ -1,7 +1,5 @@
 # HaGeDu - Budapest Event Aggregator
 
-Aggregates ~40 Budapest venues across Tixa, TicketSwap, and Bandsintown into a single web app.
-
 ## Tech Stack
 
 | Layer | Technology |
