@@ -1,0 +1,269 @@
+<!DOCTYPE html>
+<html lang="hu">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>HaGeDu — Teljes alkalmazás váz</title>
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    background: #f5f5f3;
+    color: #1a1a18;
+    padding: 24px 16px;
+  }
+  h1 { font-size: 15px; font-weight: 500; color: #3d3d3a; margin-bottom: 4px; }
+  .subtitle { font-size: 12px; color: #73726c; margin-bottom: 20px; }
+
+  .section { margin-bottom: 2.5rem; }
+  .section-title {
+    font-size: 11px;
+    font-weight: 500;
+    color: #73726c;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    margin-bottom: 12px;
+    padding-bottom: 6px;
+    border-bottom: 0.5px solid #d3d1c7;
+  }
+  .screen-row { display: flex; gap: 12px; flex-wrap: wrap; }
+  .screen {
+    background: #ffffff;
+    border: 1px solid #c8c7bf;
+    border-radius: 10px;
+    padding: 10px;
+    min-width: 160px;
+    flex: 1;
+  }
+  .screen-label {
+    font-size: 11px;
+    font-weight: 500;
+    color: #73726c;
+    margin-bottom: 8px;
+    text-align: center;
+  }
+  .nav {
+    height: 28px;
+    background: #f1efe8;
+    border-radius: 4px;
+    margin-bottom: 8px;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    padding: 0 8px;
+  }
+  .nav-dot { width: 36px; height: 6px; background: #b4b2a9; border-radius: 3px; }
+  .nav-btn { width: 22px; height: 14px; background: #b5d4f4; border-radius: 3px; margin-left: auto; }
+  .hero {
+    height: 38px;
+    background: #f1efe8;
+    border-radius: 4px;
+    margin-bottom: 6px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .hero span { font-size: 9px; color: #888780; }
+  .search-bar {
+    height: 18px;
+    background: #f1efe8;
+    border: 0.5px solid #c8c7bf;
+    border-radius: 3px;
+    margin-bottom: 6px;
+  }
+  .filter-row { display: flex; gap: 3px; margin-bottom: 6px; }
+  .chip { height: 12px; border-radius: 6px; background: #f1efe8; flex: 1; }
+  .card {
+    height: 30px;
+    background: #f1efe8;
+    border-radius: 4px;
+    margin-bottom: 4px;
+    display: flex;
+    align-items: center;
+    padding: 0 5px;
+    gap: 5px;
+  }
+  .card-img { width: 22px; height: 22px; background: #d3d1c7; border-radius: 3px; flex-shrink: 0; }
+  .line { height: 4px; border-radius: 2px; background: #d3d1c7; margin-bottom: 2px; }
+  .detail-img { height: 50px; background: #f1efe8; border-radius: 4px; margin-bottom: 6px; }
+  .tag-row { display: flex; gap: 3px; margin-bottom: 5px; }
+  .tag { height: 10px; width: 32px; border-radius: 5px; background: #b5d4f4; }
+  .map-area {
+    height: 60px;
+    background: #f1efe8;
+    border-radius: 4px;
+    margin-bottom: 6px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .btn { height: 16px; border-radius: 3px; background: #b5d4f4; }
+  .form-field {
+    height: 16px;
+    background: #f1efe8;
+    border: 0.5px solid #c8c7bf;
+    border-radius: 3px;
+    margin-bottom: 5px;
+  }
+  .label { height: 5px; width: 60%; border-radius: 2px; background: #d3d1c7; margin-bottom: 3px; }
+  .arrow-sep {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #b4b2a9;
+    font-size: 18px;
+    padding: 0 2px;
+    align-self: center;
+    margin-top: 20px;
+  }
+
+  .nav-box {
+    background: #ffffff;
+    border: 0.5px solid #d3d1c7;
+    border-radius: 10px;
+    padding: 14px;
+  }
+  .nav-row {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+    align-items: center;
+    margin-bottom: 8px;
+  }
+  .nav-row:last-child { margin-bottom: 0; }
+  .nav-label { font-size: 12px; color: #73726c; min-width: 100px; }
+  .pill {
+    height: 20px;
+    padding: 0 10px;
+    border-radius: 10px;
+    font-size: 11px;
+    display: flex;
+    align-items: center;
+    color: #5f5e5a;
+    background: #f1efe8;
+  }
+  .pill.info { background: #e6f1fb; color: #185fa5; }
+  .pill.success { background: #eaf3de; color: #3b6d11; }
+  .arrow-inline { color: #b4b2a9; font-size: 12px; }
+</style>
+</head>
+<body>
+
+<h1>HaGeDu — Teljes alkalmazás váz</h1>
+<p class="subtitle">Budapest Event Aggregator · Low-fidelity wireframe · Vue.js + Node.js + MySQL</p>
+
+<div class="section">
+  <div class="section-title">Teljes alkalmazás váz — főképernyők</div>
+  <div style="display:flex;align-items:flex-start;gap:8px;flex-wrap:nowrap;overflow-x:auto;padding-bottom:8px;">
+
+    <div style="min-width:160px;flex:1;">
+      <div class="screen">
+        <div class="screen-label">Főoldal (Home)</div>
+        <div class="nav">
+          <div class="nav-dot"></div>
+          <div class="nav-dot" style="width:24px"></div>
+          <div class="nav-dot" style="width:28px"></div>
+          <div class="nav-btn"></div>
+        </div>
+        <div class="hero"><span>Felfedezd Budapest eseményeit</span></div>
+        <div class="search-bar"></div>
+        <div class="filter-row">
+          <div class="chip"></div><div class="chip"></div>
+          <div class="chip"></div><div class="chip"></div>
+        </div>
+        <div class="card"><div class="card-img"></div><div style="flex:1"><div class="line" style="width:70%"></div><div class="line" style="width:50%"></div></div></div>
+        <div class="card"><div class="card-img"></div><div style="flex:1"><div class="line" style="width:80%"></div><div class="line" style="width:45%"></div></div></div>
+        <div class="card"><div class="card-img"></div><div style="flex:1"><div class="line" style="width:60%"></div><div class="line" style="width:55%"></div></div></div>
+      </div>
+    </div>
+
+    <div class="arrow-sep">→</div>
+
+    <div style="min-width:160px;flex:1;">
+      <div class="screen">
+        <div class="screen-label">Esemény részletek</div>
+        <div class="nav">
+          <div class="nav-dot" style="width:16px"></div>
+          <div class="nav-dot" style="width:40px"></div>
+        </div>
+        <div class="detail-img"></div>
+        <div class="tag-row"><div class="tag"></div><div class="tag"></div></div>
+        <div class="line" style="width:90%;height:6px;border-radius:3px;margin-bottom:4px"></div>
+        <div class="line" style="width:60%;margin-bottom:4px"></div>
+        <div class="line" style="width:75%;margin-bottom:4px"></div>
+        <div class="line" style="width:55%;margin-bottom:6px"></div>
+        <div class="map-area"><span style="font-size:9px;color:#888780">Térkép</span></div>
+        <div class="btn" style="width:100%"></div>
+      </div>
+    </div>
+
+    <div class="arrow-sep">→</div>
+
+    <div style="min-width:160px;flex:1;">
+      <div class="screen">
+        <div class="screen-label">Bejelentkezés / Regisztráció</div>
+        <div class="nav"><div class="nav-dot"></div></div>
+        <div style="height:20px;background:#f1efe8;border-radius:4px;margin-bottom:10px;display:flex;align-items:center;justify-content:center;"><span style="font-size:9px;color:#888780">Logo</span></div>
+        <div class="label"></div>
+        <div class="form-field"></div>
+        <div class="label"></div>
+        <div class="form-field"></div>
+        <div class="btn" style="width:100%;margin-bottom:5px"></div>
+        <div class="line" style="width:80%;margin:auto"></div>
+      </div>
+    </div>
+
+    <div class="arrow-sep">→</div>
+
+    <div style="min-width:160px;flex:1;">
+      <div class="screen">
+        <div class="screen-label">Profil / Mentett események</div>
+        <div class="nav">
+          <div class="nav-dot"></div>
+          <div class="nav-dot" style="width:28px"></div>
+          <div class="nav-btn"></div>
+        </div>
+        <div style="display:flex;align-items:center;gap:6px;margin-bottom:8px;">
+          <div style="width:28px;height:28px;border-radius:50%;background:#b5d4f4;flex-shrink:0;"></div>
+          <div>
+            <div class="line" style="width:60px;margin-bottom:2px"></div>
+            <div class="line" style="width:40px"></div>
+          </div>
+        </div>
+        <div class="label" style="margin-bottom:4px"></div>
+        <div class="card"><div class="card-img"></div><div style="flex:1"><div class="line" style="width:70%"></div><div class="line" style="width:50%"></div></div></div>
+        <div class="card"><div class="card-img"></div><div style="flex:1"><div class="line" style="width:65%"></div><div class="line" style="width:40%"></div></div></div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<div class="section">
+  <div class="section-title">Navigáció &amp; állapotok áttekintése</div>
+  <div class="nav-box">
+    <div class="nav-row">
+      <div class="nav-label" style="font-size:12px;color:#73726c;">Belépés nélkül:</div>
+      <div class="pill">Főoldal</div>
+      <div class="arrow-inline">→</div>
+      <div class="pill">Keresés / szűrés</div>
+      <div class="arrow-inline">→</div>
+      <div class="pill">Esemény részlet</div>
+      <div class="arrow-inline">→</div>
+      <div class="pill info">Regisztráció / Login</div>
+    </div>
+    <div class="nav-row">
+      <div class="nav-label" style="font-size:12px;color:#73726c;">Belépés után:</div>
+      <div class="pill">Főoldal</div>
+      <div class="arrow-inline">→</div>
+      <div class="pill">Esemény részlet</div>
+      <div class="arrow-inline">→</div>
+      <div class="pill success">Mentés / "Érdekel"</div>
+      <div class="arrow-inline">→</div>
+      <div class="pill">Profil / Mentett lista</div>
+    </div>
+  </div>
+</div>
+
+</body>
+</html>
