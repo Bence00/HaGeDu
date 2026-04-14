@@ -7,6 +7,7 @@ app.use(express.json());
 
 app.use('/api/auth',   require('./routes/auth'));
 app.use('/api/venues', require('./routes/venues'));
+app.use('/api/events', require('./routes/events'));
 
 // Globális hibakezelő
 app.use((err, req, res, next) => {
