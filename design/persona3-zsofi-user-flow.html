@@ -1,0 +1,278 @@
+<!DOCTYPE html>
+<html lang="hu">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Persona 3 — Zsófi visszatérő látogató flow</title>
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    background: #f5f5f3;
+    color: #1a1a18;
+    padding: 24px 16px;
+  }
+  h1 { font-size: 15px; font-weight: 500; color: #3d3d3a; margin-bottom: 4px; }
+  .subtitle { font-size: 12px; color: #73726c; margin-bottom: 20px; }
+
+  .persona-card {
+    background: #ffffff;
+    border: 0.5px solid #d3d1c7;
+    border-radius: 10px;
+    padding: 12px 14px;
+    margin-bottom: 20px;
+    max-width: 520px;
+  }
+  .persona-card h2 { font-size: 13px; font-weight: 500; margin-bottom: 4px; }
+  .persona-card p { font-size: 12px; color: #5f5e5a; line-height: 1.5; }
+  .pain {
+    background: #e1f5ee;
+    border-left: 3px solid #1d9e75;
+    padding: 8px 10px;
+    border-radius: 0 6px 6px 0;
+    margin-top: 8px;
+    font-size: 12px;
+    color: #04342c;
+  }
+
+  .section-title {
+    font-size: 11px;
+    font-weight: 500;
+    color: #73726c;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    margin-bottom: 12px;
+    padding-bottom: 6px;
+    border-bottom: 0.5px solid #d3d1c7;
+  }
+
+  .flow {
+    display: flex;
+    align-items: flex-start;
+    gap: 8px;
+    overflow-x: auto;
+    padding: 4px 0 12px;
+  }
+  .step { display: flex; flex-direction: column; align-items: center; min-width: 112px; }
+  .screen {
+    background: #ffffff;
+    border: 1px solid #c8c7bf;
+    border-radius: 8px;
+    width: 112px;
+    padding: 7px;
+  }
+  .screen.highlight { border: 1.5px solid #1d9e75; }
+  .step-num { font-size: 10px; color: #73726c; margin-bottom: 4px; }
+  .step-label {
+    font-size: 10px;
+    font-weight: 500;
+    color: #1a1a18;
+    margin-top: 5px;
+    text-align: center;
+    max-width: 112px;
+  }
+  .arrow {
+    font-size: 18px;
+    color: #b4b2a9;
+    align-self: center;
+    padding-top: 18px;
+    flex-shrink: 0;
+  }
+  .nav { height: 16px; background: #f1efe8; border-radius: 3px; margin-bottom: 5px; }
+  .bar { height: 5px; border-radius: 2px; background: #d3d1c7; margin-bottom: 3px; }
+  .search {
+    height: 12px;
+    background: #f1efe8;
+    border: 0.5px solid #c8c7bf;
+    border-radius: 3px;
+    margin-bottom: 4px;
+    display: flex;
+    align-items: center;
+    padding: 0 4px;
+  }
+  .chip-row { display: flex; gap: 2px; margin-bottom: 4px; }
+  .chip { height: 9px; border-radius: 4px; background: #f1efe8; flex: 1; }
+  .chip.active { background: #9fe1cb; }
+  .card {
+    height: 22px;
+    background: #f1efe8;
+    border-radius: 3px;
+    margin-bottom: 3px;
+    display: flex;
+    align-items: center;
+    padding: 0 4px;
+    gap: 4px;
+  }
+  .card-img { width: 14px; height: 14px; background: #d3d1c7; border-radius: 2px; flex-shrink: 0; }
+  .detail-img { height: 32px; background: #f1efe8; border-radius: 3px; margin-bottom: 4px; }
+  .heart {
+    width: 100%;
+    height: 14px;
+    background: #9fe1cb;
+    border-radius: 3px;
+    margin-top: 4px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .heart span { font-size: 8px; color: #085041; }
+  .action-label { font-size: 9px; color: #0f6e56; text-align: center; margin-top: 3px; }
+  .form-field {
+    height: 13px;
+    background: #f1efe8;
+    border: 0.5px solid #c8c7bf;
+    border-radius: 3px;
+    margin-bottom: 4px;
+  }
+  .label { height: 4px; width: 55%; border-radius: 2px; background: #d3d1c7; margin-bottom: 2px; }
+  .btn-p { height: 12px; border-radius: 3px; background: #b5d4f4; width: 100%; margin-top: 3px; }
+  .fav-card {
+    height: 20px;
+    background: #f1efe8;
+    border-radius: 3px;
+    margin-bottom: 3px;
+    display: flex;
+    align-items: center;
+    padding: 0 4px;
+    gap: 4px;
+  }
+  .fav-dot { width: 8px; height: 8px; border-radius: 50%; background: #9fe1cb; flex-shrink: 0; }
+  .ok-badge {
+    height: 22px;
+    background: #e1f5ee;
+    border-radius: 4px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 4px;
+  }
+  .ok-badge span { font-size: 9px; color: #085041; }
+
+  .checklist { margin-top: 24px; }
+  .checklist h3 { font-size: 12px; font-weight: 500; color: #3d3d3a; margin-bottom: 8px; }
+  .check-item { font-size: 11px; color: #5f5e5a; margin-bottom: 4px; }
+  .check-item::before { content: "✓ "; color: #3b6d11; font-weight: 500; }
+</style>
+</head>
+<body>
+
+<h1>Persona 3 — Zsófi visszatérő látogató user flow</h1>
+<p class="subtitle">HaGeDu Budapest Event Aggregator · Low-fidelity wireframe</p>
+
+<div class="persona-card">
+  <h2>Zsófi, 31 éves — marketinges</h2>
+  <p>Rendszeresen jár ki koncertekre és bulikra, van néhány kedvenc helyszíne Budapesten. Nem akar minden alkalommal újra rákeresni.</p>
+  <div class="pain">Pain Point: Nincs módja megjelölni és visszakeresni a kedvenc helyszíneit — minden látogatáskor újra kell szűrni/keresni, és elfelejtette a pontos neveket.</div>
+</div>
+
+<div class="section-title">User flow: névkeresés → helyszín részlet → kedvencnek jelöl (login) → profil kedvencek lista</div>
+
+<div class="flow">
+
+  <div class="step">
+    <div class="step-num">1. lépés</div>
+    <div class="screen">
+      <div class="nav"></div>
+      <div class="search"><span style="font-size:7px;color:#888780">Keresés helyszín neve...</span></div>
+      <div class="chip-row"><div class="chip"></div><div class="chip"></div><div class="chip"></div></div>
+      <div class="card"><div class="card-img"></div><div style="flex:1"><div class="bar" style="width:70%"></div></div></div>
+      <div class="card"><div class="card-img"></div><div style="flex:1"><div class="bar" style="width:80%"></div></div></div>
+      <div class="card"><div class="card-img"></div><div style="flex:1"><div class="bar" style="width:55%"></div></div></div>
+      <div class="action-label">Név begépelése a keresőbe</div>
+    </div>
+    <div class="step-label">Főoldal — névkeresés</div>
+  </div>
+
+  <div class="arrow">→</div>
+
+  <div class="step">
+    <div class="step-num">2. lépés</div>
+    <div class="screen highlight">
+      <div class="nav"></div>
+      <div class="search"><span style="font-size:7px;color:#888780">„Akvárium"</span></div>
+      <div class="chip-row"><div class="chip active"></div><div class="chip"></div><div class="chip"></div></div>
+      <div class="card"><div class="card-img"></div><div style="flex:1"><div class="bar" style="width:85%"></div></div></div>
+      <div class="action-label">Szűrt találat → rákattint</div>
+    </div>
+    <div class="step-label">Szűrt lista — 1 találat</div>
+  </div>
+
+  <div class="arrow">→</div>
+
+  <div class="step">
+    <div class="step-num">3. lépés</div>
+    <div class="screen">
+      <div class="detail-img"></div>
+      <div class="bar" style="width:85%;height:5px;margin-bottom:3px"></div>
+      <div class="bar" style="width:55%;margin-bottom:2px"></div>
+      <div class="bar" style="width:70%;margin-bottom:5px"></div>
+      <div class="heart"><span>♡ Kedvencnek jelöl</span></div>
+      <div class="action-label">Kedvenc gomb → tap</div>
+    </div>
+    <div class="step-label">Helyszín részletlap</div>
+  </div>
+
+  <div class="arrow">→</div>
+
+  <div class="step">
+    <div class="step-num">4. lépés</div>
+    <div class="screen">
+      <div style="height:14px;background:#f1efe8;border-radius:3px;margin-bottom:6px;"></div>
+      <div class="label"></div>
+      <div class="form-field"></div>
+      <div class="label"></div>
+      <div class="form-field"></div>
+      <div class="btn-p"></div>
+      <div class="action-label">Login → visszairányítás</div>
+    </div>
+    <div class="step-label">Login (auth redirect)</div>
+  </div>
+
+  <div class="arrow">→</div>
+
+  <div class="step">
+    <div class="step-num">5. lépés</div>
+    <div class="screen highlight">
+      <div class="detail-img"></div>
+      <div class="bar" style="width:80%;margin-bottom:3px"></div>
+      <div class="heart" style="background:#e1f5ee;">
+        <span style="color:#085041">♥ Mentve!</span>
+      </div>
+      <div class="action-label">Visszajelzés a részletlapon</div>
+    </div>
+    <div class="step-label">Helyszín mentve — visszajelzés</div>
+  </div>
+
+  <div class="arrow">→</div>
+
+  <div class="step">
+    <div class="step-num">6. lépés ✓</div>
+    <div class="screen">
+      <div class="nav"></div>
+      <div style="display:flex;align-items:center;gap:4px;margin-bottom:6px;">
+        <div style="width:20px;height:20px;border-radius:50%;background:#9fe1cb;flex-shrink:0;"></div>
+        <div>
+          <div class="bar" style="width:44px;margin-bottom:2px"></div>
+          <div class="bar" style="width:30px"></div>
+        </div>
+      </div>
+      <div class="ok-badge"><span>♥ Kedvenc helyszínek</span></div>
+      <div class="fav-card"><div class="fav-dot"></div><div style="flex:1"><div class="bar" style="width:70%"></div></div></div>
+      <div class="fav-card"><div class="fav-dot"></div><div style="flex:1"><div class="bar" style="width:55%"></div></div></div>
+    </div>
+    <div class="step-label">Végállapot: Profil → Kedvencek</div>
+  </div>
+
+</div>
+
+<div class="checklist">
+  <h3>Checklist validáció</h3>
+  <div class="check-item">Persona és Pain Point a valós MVP-re épül: névkeresés + kedvencek mentése pontosan az, amit a backend (GET /venues, POST /favorites) és a ProfileView támogat</div>
+  <div class="check-item">Flow egyértelműen indul (főoldal keresőmező) és végállapotba érkezik (profil kedvencek lista)</div>
+  <div class="check-item">Auth redirect: a kedvenc gomb login oldalra irányít, visszatérés után automatikusan ment — összhangban a Vue Router guard logikával</div>
+  <div class="check-item">Visszajelzés: szűrt lista 1 találatra szűkül, részletlapon gomb állapota vált (♡ → ♥), profil listán megjelenik</div>
+  <div class="check-item">Struktúra tükrözi az MVP-t: nincs feltöltés, nincs térkép — csak a tényleges routes/views alapján</div>
+</div>
+
+</body>
+</html>
