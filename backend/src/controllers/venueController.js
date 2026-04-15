@@ -10,6 +10,24 @@ async function getAll(req, res, next) {
   }
 }
 
+async function getById(req, res, next) {
+  try {
+    const venueId = Number(req.params.venueId);
+    if (!Number.isInteger(venueId) || venueId < 1) {
+      return res.status(400).json({ error: 'Érvénytelen helyszín azonosító' });
+    }
+
+    const venue = await venueModel.findById(venueId);
+    if (!venue) {
+      return res.status(404).json({ error: 'Helyszín nem található' });
+    }
+
+    res.json(venue);
+  } catch (err) {
+    next(err);
+  }
+}
+
 async function getFavorites(req, res, next) {
   try {
     const venues = await favoriteModel.findByUser(req.user.id);
@@ -57,4 +75,4 @@ async function removeFavorite(req, res, next) {
   }
 }
 
-module.exports = { getAll, getFavorites, addFavorite, removeFavorite };
+module.exports = { getAll, getById, getFavorites, addFavorite, removeFavorite };

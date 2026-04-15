@@ -1,0 +1,1294 @@
+<!DOCTYPE html>
+<html lang="hu">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>HaGeDu – UX Design Dokumentum</title>
+<style>
+  :root {
+    --primary: #6c63ff;
+    --primary-light: #ede9ff;
+    --secondary: #ff6584;
+    --accent: #43b89c;
+    --bg: #f8f9fc;
+    --card: #ffffff;
+    --border: #e2e8f0;
+    --text: #1a202c;
+    --muted: #718096;
+    --success: #38a169;
+    --wireframe-bg: #f7f8fa;
+    --wireframe-border: #b0b8c8;
+    --wireframe-element: #d1d9e6;
+    --wireframe-primary: #6c63ff;
+    --wireframe-text: #4a5568;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: 'Segoe UI', system-ui, sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    line-height: 1.6;
+  }
+
+  /* ── HEADER ── */
+  header {
+    background: linear-gradient(135deg, #6c63ff 0%, #a78bfa 100%);
+    color: white;
+    padding: 3rem 2rem 2rem;
+    text-align: center;
+  }
+  header h1 { font-size: 2.4rem; font-weight: 700; margin-bottom: .5rem; }
+  header p  { opacity: .85; font-size: 1.05rem; }
+
+  /* ── NAV TABS ── */
+  nav.tabs {
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    background: white;
+    border-bottom: 2px solid var(--border);
+    display: flex;
+    overflow-x: auto;
+    gap: .25rem;
+    padding: 0 1rem;
+    box-shadow: 0 2px 8px rgba(0,0,0,.06);
+  }
+  nav.tabs a {
+    white-space: nowrap;
+    padding: .85rem 1.2rem;
+    text-decoration: none;
+    color: var(--muted);
+    font-weight: 500;
+    font-size: .92rem;
+    border-bottom: 3px solid transparent;
+    transition: .2s;
+  }
+  nav.tabs a:hover { color: var(--primary); }
+  nav.tabs a.active { color: var(--primary); border-bottom-color: var(--primary); }
+
+  /* ── LAYOUT ── */
+  main { max-width: 1100px; margin: 0 auto; padding: 2rem 1.5rem 4rem; }
+
+  section { margin-bottom: 4rem; scroll-margin-top: 60px; }
+
+  h2.section-title {
+    font-size: 1.6rem;
+    font-weight: 700;
+    color: var(--primary);
+    border-left: 4px solid var(--primary);
+    padding-left: .85rem;
+    margin-bottom: 1.5rem;
+  }
+  h3.sub-title {
+    font-size: 1.15rem;
+    font-weight: 600;
+    color: var(--text);
+    margin: 1.5rem 0 .75rem;
+  }
+
+  /* ── PERSONA CARD ── */
+  .persona-card {
+    background: var(--card);
+    border-radius: 16px;
+    border: 1px solid var(--border);
+    overflow: hidden;
+    margin-bottom: 2.5rem;
+    box-shadow: 0 2px 12px rgba(0,0,0,.05);
+  }
+  .persona-header {
+    display: flex;
+    align-items: center;
+    gap: 1.25rem;
+    padding: 1.5rem 1.75rem;
+    border-bottom: 1px solid var(--border);
+  }
+  .persona-avatar {
+    width: 64px; height: 64px;
+    border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 1.6rem; font-weight: 700;
+    color: white;
+    flex-shrink: 0;
+  }
+  .persona-avatar.a { background: linear-gradient(135deg, #6c63ff, #a78bfa); }
+  .persona-avatar.b { background: linear-gradient(135deg, #43b89c, #2dd4bf); }
+  .persona-avatar.c { background: linear-gradient(135deg, #f59e0b, #fbbf24); }
+  .persona-meta h3 { font-size: 1.2rem; font-weight: 700; }
+  .persona-meta span { font-size: .85rem; color: var(--muted); }
+
+  .persona-body { padding: 1.5rem 1.75rem; }
+  .persona-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 1rem;
+    margin-bottom: 1.25rem;
+  }
+  .info-box {
+    background: var(--bg);
+    border-radius: 10px;
+    padding: 1rem;
+    border: 1px solid var(--border);
+  }
+  .info-box .label { font-size: .75rem; font-weight: 600; text-transform: uppercase; letter-spacing: .05em; color: var(--muted); margin-bottom: .35rem; }
+  .info-box .value { font-size: .92rem; color: var(--text); }
+
+  .pain-point {
+    background: #fff5f5;
+    border: 1px solid #fed7d7;
+    border-radius: 10px;
+    padding: 1rem 1.25rem;
+    margin-bottom: 1.5rem;
+  }
+  .pain-point .label { font-size: .75rem; font-weight: 700; text-transform: uppercase; letter-spacing: .05em; color: #e53e3e; margin-bottom: .4rem; }
+  .pain-point .value { font-size: .93rem; }
+
+  /* ── USER FLOW TABLE ── */
+  .flow-header {
+    display: flex;
+    align-items: center;
+    gap: .75rem;
+    margin-bottom: 1rem;
+  }
+  .flow-badge {
+    background: var(--primary-light);
+    color: var(--primary);
+    font-size: .75rem;
+    font-weight: 700;
+    padding: .25rem .65rem;
+    border-radius: 20px;
+  }
+  .flow-state {
+    font-size: .85rem;
+    color: var(--muted);
+  }
+
+  table.flow-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: .88rem;
+  }
+  table.flow-table th {
+    background: var(--primary);
+    color: white;
+    padding: .65rem .9rem;
+    text-align: left;
+    font-weight: 600;
+  }
+  table.flow-table th:first-child { border-radius: 8px 0 0 0; }
+  table.flow-table th:last-child  { border-radius: 0 8px 0 0; }
+  table.flow-table td {
+    padding: .7rem .9rem;
+    border-bottom: 1px solid var(--border);
+    vertical-align: top;
+  }
+  table.flow-table tr:nth-child(even) td { background: var(--bg); }
+  table.flow-table tr:last-child td:first-child { border-radius: 0 0 0 8px; }
+  table.flow-table tr:last-child td:last-child  { border-radius: 0 0 8px 0; }
+  .step-num {
+    display: inline-flex; align-items: center; justify-content: center;
+    width: 24px; height: 24px;
+    background: var(--primary);
+    color: white;
+    border-radius: 50%;
+    font-size: .75rem;
+    font-weight: 700;
+  }
+  .flow-end {
+    background: #f0fff4;
+    border: 1px solid #9ae6b4;
+    border-radius: 8px;
+    padding: .65rem 1rem;
+    margin-top: .85rem;
+    font-size: .88rem;
+    color: var(--success);
+    font-weight: 500;
+  }
+
+  /* ── SKELETON MAP ── */
+  .skeleton-tree {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 1.5rem;
+    font-family: 'Consolas', 'Cascadia Code', monospace;
+    font-size: .85rem;
+    overflow-x: auto;
+  }
+  .route { margin-bottom: 1.25rem; }
+  .route-path {
+    display: inline-block;
+    background: var(--primary);
+    color: white;
+    font-size: .8rem;
+    font-weight: 700;
+    padding: .2rem .6rem;
+    border-radius: 6px;
+    margin-right: .5rem;
+  }
+  .route-name { font-weight: 600; font-size: .95rem; }
+  .route-badge {
+    display: inline-block;
+    font-size: .7rem;
+    padding: .15rem .5rem;
+    border-radius: 20px;
+    margin-left: .5rem;
+    font-weight: 600;
+  }
+  .badge-public  { background: #e6fffa; color: #2c7a7b; border: 1px solid #81e6d9; }
+  .badge-auth    { background: #ebf8ff; color: #2b6cb0; border: 1px solid #90cdf4; }
+  .badge-admin   { background: #fff5f5; color: #c53030; border: 1px solid #feb2b2; }
+  .badge-planned { background: #fffaf0; color: #c05621; border: 1px solid #fbd38d; }
+  .tree-children { margin-left: 1.5rem; margin-top: .5rem; }
+  .tree-item {
+    position: relative;
+    padding-left: 1.2rem;
+    margin-top: .3rem;
+    color: var(--muted);
+    font-size: .85rem;
+  }
+  .tree-item::before {
+    content: '├──';
+    position: absolute;
+    left: 0;
+    color: var(--border);
+  }
+  .tree-item:last-child::before { content: '└──'; }
+  .tree-item.sub { margin-left: 1.5rem; }
+
+  /* ── WIREFRAMES ── */
+  .wireframes-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(420px, 1fr));
+    gap: 1.5rem;
+  }
+  .wf-card {
+    background: var(--card);
+    border-radius: 12px;
+    border: 1px solid var(--border);
+    overflow: hidden;
+    box-shadow: 0 2px 10px rgba(0,0,0,.05);
+  }
+  .wf-title {
+    background: #f1f0ff;
+    padding: .7rem 1rem;
+    font-size: .85rem;
+    font-weight: 700;
+    color: var(--primary);
+    border-bottom: 1px solid var(--border);
+  }
+  .wf-frame {
+    padding: 1rem;
+    background: white;
+  }
+
+  /* Wireframe UI elements */
+  .wf-screen {
+    border: 2px solid var(--wireframe-border);
+    border-radius: 8px;
+    overflow: hidden;
+    background: var(--wireframe-bg);
+    font-size: .78rem;
+    color: var(--wireframe-text);
+  }
+  .wf-navbar {
+    background: white;
+    border-bottom: 2px solid var(--wireframe-border);
+    padding: .5rem .75rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+  .wf-logo { font-weight: 800; font-size: .85rem; color: var(--primary); }
+  .wf-nav-links { display: flex; gap: .4rem; }
+  .wf-btn {
+    padding: .25rem .6rem;
+    border-radius: 5px;
+    font-size: .72rem;
+    font-weight: 600;
+    border: 1.5px solid var(--wireframe-border);
+    background: white;
+    color: var(--wireframe-text);
+    cursor: default;
+  }
+  .wf-btn.primary {
+    background: var(--primary);
+    color: white;
+    border-color: var(--primary);
+  }
+  .wf-btn.outline {
+    border-color: var(--primary);
+    color: var(--primary);
+    background: white;
+  }
+  .wf-hero {
+    background: linear-gradient(135deg, #ede9ff 0%, #f0f4ff 100%);
+    padding: 1.25rem .75rem;
+    text-align: center;
+  }
+  .wf-hero-badge {
+    display: inline-block;
+    background: white;
+    border-radius: 20px;
+    padding: .15rem .5rem;
+    font-size: .7rem;
+    margin-bottom: .4rem;
+  }
+  .wf-hero-title { font-weight: 700; font-size: .95rem; color: var(--text); margin-bottom: .3rem; }
+  .wf-hero-title span { color: var(--primary); }
+  .wf-search {
+    display: flex;
+    align-items: center;
+    background: white;
+    border: 1.5px solid var(--wireframe-border);
+    border-radius: 8px;
+    padding: .3rem .6rem;
+    margin: .5rem 0;
+    font-size: .75rem;
+    color: #aaa;
+  }
+  .wf-stats {
+    display: flex;
+    justify-content: center;
+    gap: 1.5rem;
+    margin-top: .5rem;
+    font-size: .7rem;
+  }
+  .wf-stat strong { display: block; font-size: .85rem; color: var(--primary); }
+  .wf-content { padding: .75rem; }
+  .wf-section-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: .5rem;
+  }
+  .wf-section-title { font-weight: 700; font-size: .82rem; }
+  .wf-muted { font-size: .7rem; color: var(--muted); }
+  .wf-chips { display: flex; gap: .35rem; flex-wrap: wrap; margin-bottom: .75rem; }
+  .wf-chip {
+    padding: .2rem .5rem;
+    border-radius: 20px;
+    font-size: .68rem;
+    border: 1.5px solid var(--wireframe-border);
+    background: white;
+  }
+  .wf-chip.active {
+    background: var(--primary);
+    color: white;
+    border-color: var(--primary);
+  }
+  .wf-card-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: .5rem;
+  }
+  .wf-venue-card {
+    background: white;
+    border-radius: 6px;
+    border: 1.5px solid var(--wireframe-border);
+    overflow: hidden;
+  }
+  .wf-img-placeholder {
+    height: 40px;
+    background: var(--wireframe-element);
+    display: flex; align-items: center; justify-content: center;
+    font-size: .65rem; color: #999;
+  }
+  .wf-card-body { padding: .3rem .4rem; }
+  .wf-card-name { font-weight: 600; font-size: .7rem; }
+  .wf-card-cat  { font-size: .62rem; color: var(--muted); }
+  .wf-card-addr { font-size: .62rem; color: var(--muted); margin-top: .2rem; }
+  .wf-card-footer {
+    display: flex;
+    justify-content: flex-end;
+    padding: .2rem .4rem;
+    border-top: 1px solid var(--border);
+  }
+  .wf-heart { font-size: .75rem; cursor: default; }
+
+  /* Detail page wireframe */
+  .wf-back { padding: .4rem .75rem; font-size: .72rem; color: var(--primary); border-bottom: 1px solid var(--border); }
+  .wf-cover { height: 70px; background: var(--wireframe-element); display: flex; align-items: center; justify-content: center; color: #999; font-size: .72rem; }
+  .wf-detail-body { padding: .75rem; }
+  .wf-venue-name { font-weight: 700; font-size: .95rem; display: flex; justify-content: space-between; }
+  .wf-rating { color: #f59e0b; font-size: .75rem; }
+  .wf-meta-row { font-size: .72rem; color: var(--muted); margin: .2rem 0; }
+  .wf-divider { border: none; border-top: 1px solid var(--border); margin: .5rem 0; }
+  .wf-map { height: 55px; background: #e8f5e9; border: 1.5px solid #a5d6a7; border-radius: 6px; display: flex; align-items: center; justify-content: center; font-size: .7rem; color: #388e3c; margin-bottom: .6rem; }
+  .wf-action-row { display: flex; gap: .5rem; }
+  .wf-action-row .wf-btn { flex: 1; text-align: center; padding: .4rem; }
+
+  /* Login/Register wireframe */
+  .wf-form-wrap { padding: 1.25rem .75rem; display: flex; justify-content: center; }
+  .wf-form-card {
+    background: white;
+    border: 1.5px solid var(--wireframe-border);
+    border-radius: 10px;
+    padding: 1rem;
+    width: 100%;
+    max-width: 240px;
+  }
+  .wf-form-title { font-weight: 700; font-size: .88rem; margin-bottom: .75rem; text-align: center; }
+  .wf-field { margin-bottom: .5rem; }
+  .wf-field label { display: block; font-size: .7rem; font-weight: 600; margin-bottom: .2rem; color: var(--muted); }
+  .wf-field .wf-input {
+    width: 100%;
+    border: 1.5px solid var(--wireframe-border);
+    border-radius: 5px;
+    padding: .3rem .5rem;
+    font-size: .75rem;
+    background: var(--wireframe-bg);
+    color: var(--wireframe-text);
+  }
+  .wf-field .wf-input.error { border-color: #e53e3e; }
+  .wf-error-msg { font-size: .68rem; color: #e53e3e; margin-top: .2rem; }
+  .wf-form-btn { width: 100%; margin-top: .65rem; padding: .45rem; font-size: .78rem; text-align: center; }
+  .wf-form-link { text-align: center; font-size: .7rem; color: var(--muted); margin-top: .5rem; }
+  .wf-form-link a { color: var(--primary); text-decoration: none; font-weight: 600; }
+
+  /* Profile wireframe */
+  .wf-profile-header {
+    display: flex; align-items: center; gap: .75rem;
+    background: white; border: 1.5px solid var(--border); border-radius: 8px;
+    padding: .65rem .75rem; margin-bottom: .65rem;
+  }
+  .wf-avatar {
+    width: 36px; height: 36px; border-radius: 50%;
+    background: var(--primary); color: white;
+    display: flex; align-items: center; justify-content: center;
+    font-size: .72rem; font-weight: 700; flex-shrink: 0;
+  }
+  .wf-user-name { font-weight: 700; font-size: .82rem; }
+  .wf-user-email { font-size: .68rem; color: var(--muted); }
+  .wf-user-badge {
+    display: inline-block; background: var(--primary-light);
+    color: var(--primary); font-size: .62rem; font-weight: 700;
+    padding: .1rem .4rem; border-radius: 20px; margin-top: .2rem;
+  }
+
+  /* Modal wireframe */
+  .wf-modal-wrap {
+    position: relative;
+    padding: .75rem;
+    background: rgba(0,0,0,.08);
+  }
+  .wf-modal-backdrop {
+    position: absolute; inset: 0;
+    background: rgba(100,100,120,.15);
+    backdrop-filter: blur(1px);
+    border-radius: 0 0 6px 6px;
+  }
+  .wf-modal {
+    position: relative; z-index: 1;
+    background: white;
+    border: 1.5px solid var(--wireframe-border);
+    border-radius: 10px;
+    padding: 1rem;
+    max-width: 220px;
+    margin: 0 auto;
+    box-shadow: 0 4px 20px rgba(0,0,0,.12);
+  }
+  .wf-modal-close { float: right; font-size: .8rem; color: var(--muted); cursor: default; }
+  .wf-modal-title { font-weight: 700; font-size: .85rem; margin-bottom: .35rem; }
+  .wf-modal-text  { font-size: .72rem; color: var(--muted); margin-bottom: .65rem; }
+  .wf-modal-actions { display: flex; flex-direction: column; gap: .4rem; }
+
+  /* Wireframe notes */
+  .wf-notes {
+    margin-top: .75rem;
+    padding: .65rem .85rem;
+    background: #fffef0;
+    border: 1px solid #fef08a;
+    border-radius: 8px;
+    font-size: .78rem;
+    color: #713f12;
+  }
+  .wf-notes ul { margin-left: 1rem; }
+  .wf-notes li { margin-top: .3rem; }
+
+  /* ── CHECKLIST ── */
+  .checklist-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+    gap: 1.25rem;
+  }
+  .checklist-card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    overflow: hidden;
+  }
+  .checklist-card-header {
+    padding: .7rem 1rem;
+    font-weight: 700;
+    font-size: .88rem;
+    color: white;
+  }
+  .checklist-card-header.p { background: #6c63ff; }
+  .checklist-card-header.f { background: #43b89c; }
+  .checklist-card-header.v { background: #f59e0b; }
+  .checklist-card-header.s { background: #e53e3e; }
+  .checklist-item {
+    display: flex;
+    align-items: flex-start;
+    gap: .65rem;
+    padding: .55rem 1rem;
+    border-bottom: 1px solid var(--border);
+    font-size: .82rem;
+  }
+  .checklist-item:last-child { border-bottom: none; }
+  .check-icon { font-size: 1rem; flex-shrink: 0; margin-top: .1rem; }
+  .check-label { color: var(--text); }
+  .check-note  { font-size: .75rem; color: var(--muted); margin-top: .2rem; }
+
+  .flow-checklist-section { margin-bottom: 2rem; }
+  .flow-checklist-title {
+    font-size: 1rem;
+    font-weight: 700;
+    margin-bottom: .85rem;
+    color: var(--text);
+    display: flex;
+    align-items: center;
+    gap: .5rem;
+  }
+  .flow-checklist-title .badge-persona {
+    font-size: .75rem;
+    padding: .2rem .65rem;
+    border-radius: 20px;
+    font-weight: 700;
+  }
+  .badge-anna   { background: #ede9ff; color: #6c63ff; }
+  .badge-marton { background: #e6fffa; color: #2c7a7b; }
+  .badge-zsuzsi { background: #fffbeb; color: #92400e; }
+
+  /* ── FOOTER ── */
+  footer {
+    text-align: center;
+    padding: 2rem;
+    color: var(--muted);
+    font-size: .82rem;
+    border-top: 1px solid var(--border);
+    background: white;
+  }
+
+  /* ── UTILS ── */
+  .tag {
+    display: inline-block;
+    background: var(--primary-light);
+    color: var(--primary);
+    font-size: .72rem;
+    font-weight: 700;
+    padding: .15rem .5rem;
+    border-radius: 20px;
+    margin-right: .25rem;
+  }
+
+  @media (max-width: 640px) {
+    .wireframes-grid { grid-template-columns: 1fr; }
+    .checklist-grid  { grid-template-columns: 1fr; }
+    header h1 { font-size: 1.6rem; }
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <h1>HaGeDu – UX Design Dokumentum</h1>
+  <p>Personák · User Flow-k · Low-Fidelity Drótváz · Checklist validáció</p>
+</header>
+
+<nav class="tabs">
+  <a href="#personas" class="active">1. Personák</a>
+  <a href="#skeleton">2. Alkalmazás váz</a>
+  <a href="#wireframes">3. Drótváz</a>
+  <a href="#checklist">4. Checklist</a>
+</nav>
+
+<main>
+
+  <!-- ══════════════════════════════════════════════
+       1. PERSONÁK
+  ══════════════════════════════════════════════ -->
+  <section id="personas">
+    <h2 class="section-title">1. Personák és User Flow-k</h2>
+
+    <!-- Persona 1 – Anna -->
+    <div class="persona-card">
+      <div class="persona-header">
+        <div class="persona-avatar a">KA</div>
+        <div class="persona-meta">
+          <h3>Kovács Anna</h3>
+          <span>Persona 1 · Egyetemista · 23 év</span>
+        </div>
+      </div>
+      <div class="persona-body">
+        <div class="persona-grid">
+          <div class="info-box">
+            <div class="label">Foglalkozás</div>
+            <div class="value">Egyetemista (ELTE BTK), Budapesti bérelt lakásban él</div>
+          </div>
+          <div class="info-box">
+            <div class="label">Cél</div>
+            <div class="value">Megtalálni egy hétvégi közös programot a baráti társasággal, amit mindenki elfogad</div>
+          </div>
+          <div class="info-box">
+            <div class="label">Kontextus</div>
+            <div class="value">Aktív társasági életet él, hétvégi programszervezés mindig kaotikus – mindenki más platformot néz</div>
+          </div>
+        </div>
+        <div class="pain-point">
+          <div class="label">Pain Point</div>
+          <div class="value">Nincs egy közös hely, ahol összegyűjthetik a lehetőségeket – a Facebook, Instagram, Google között szét van szórva minden, és sokszor lemaradnak a jó programokról.</div>
+        </div>
+
+        <div class="flow-header">
+          <span class="flow-badge">User Flow 1</span>
+          <span class="flow-state">Helyszín keresése és megosztása baráttal</span>
+        </div>
+        <div class="flow-state" style="margin-bottom:.65rem; font-size:.82rem; color:var(--muted)">
+          <strong>Kiindulóállapot:</strong> Anna bejelentkezett, a főoldalon van.
+        </div>
+        <table class="flow-table">
+          <thead>
+            <tr><th>Lépés</th><th>Képernyő</th><th>Akció</th><th>Visszajelzés</th></tr>
+          </thead>
+          <tbody>
+            <tr><td><span class="step-num">1</span></td><td>Főoldal</td><td>A keresőbe beírja: „koncert"</td><td>A helyszínlista valós időben szűrődik</td></tr>
+            <tr><td><span class="step-num">2</span></td><td>Főoldal</td><td>A „Zene" kategória filtert aktiválja</td><td>Csak zenei helyszínek jelennek meg, a chip kiemelve látható</td></tr>
+            <tr><td><span class="step-num">3</span></td><td>Helyszín kártya</td><td>Megnyit egy helyszínt (pl. A38 Hajó)</td><td>Helyszín részletes nézetbe lép</td></tr>
+            <tr><td><span class="step-num">4</span></td><td>Helyszín részlet</td><td>A „Mentés" gombra kattint</td><td>Szív ikon teli lesz · toast: „Mentve a profilodba"</td></tr>
+            <tr><td><span class="step-num">5</span></td><td>Helyszín részlet</td><td>A „Megosztás" gombra kattint, kiválasztja a barátját</td><td>Barát értesítést kap · visszajelzés: „Elküldve Péternek"</td></tr>
+          </tbody>
+        </table>
+        <div class="flow-end">✓ Végállapot: Anna és Péter ugyanazt a mentett helyszínt látja, közösen dönthetnek.</div>
+      </div>
+    </div>
+
+    <!-- Persona 2 – Márton -->
+    <div class="persona-card">
+      <div class="persona-header">
+        <div class="persona-avatar b">NM</div>
+        <div class="persona-meta">
+          <h3>Nagy Márton</h3>
+          <span>Persona 2 · IT projektvezető · 35 év</span>
+        </div>
+      </div>
+      <div class="persona-body">
+        <div class="persona-grid">
+          <div class="info-box">
+            <div class="label">Foglalkozás</div>
+            <div class="value">IT projektvezető, elfoglalt hétköznapok után kulturális programokat keres hétvégén</div>
+          </div>
+          <div class="info-box">
+            <div class="label">Cél</div>
+            <div class="value">Gyorsan megtalálni egy minőségi kulturális programot anélkül, hogy sok időt tölt kereséssel</div>
+          </div>
+          <div class="info-box">
+            <div class="label">Kontextus</div>
+            <div class="value">Nincs ideje több oldalt böngészni, egyetlen helyen szeretné látni mi érhető el a városban</div>
+          </div>
+        </div>
+        <div class="pain-point">
+          <div class="label">Pain Point</div>
+          <div class="value">Budapest eseményei sok különböző oldalon vannak szétszórva (jegy.hu, facebook, venue saját oldalak), és sokat kell kattintgatni mire összegyűjti az opciókat.</div>
+        </div>
+
+        <div class="flow-header">
+          <span class="flow-badge">User Flow 2</span>
+          <span class="flow-state">Gyors programkeresés kategória alapján</span>
+        </div>
+        <div class="flow-state" style="margin-bottom:.65rem; font-size:.82rem; color:var(--muted)">
+          <strong>Kiindulóállapot:</strong> Márton belép az alkalmazásba, bejelentkezik.
+        </div>
+        <table class="flow-table">
+          <thead>
+            <tr><th>Lépés</th><th>Képernyő</th><th>Akció</th><th>Visszajelzés</th></tr>
+          </thead>
+          <tbody>
+            <tr><td><span class="step-num">1</span></td><td>Bejelentkezés</td><td>E-mail + jelszó megadása, „Bejelentkezés" gomb</td><td>Loading spinner, majd átirányítás a főoldalra</td></tr>
+            <tr><td><span class="step-num">2</span></td><td>Főoldal</td><td>A „Kultúra" filter chipre kattint</td><td>Lista szűrődik, aktív chip vizuálisan kiemelve</td></tr>
+            <tr><td><span class="step-num">3</span></td><td>Helyszínlista</td><td>Görget, megnyit egy múzeumot</td><td>Részletes nézet: nyitvatartás, cím, térkép</td></tr>
+            <tr><td><span class="step-num">4</span></td><td>Helyszín részlet</td><td>Elolvassa a leírást, megnézi a térképet</td><td>Google Maps integráció megjelenik</td></tr>
+            <tr><td><span class="step-num">5</span></td><td>Helyszín részlet</td><td>A „Mentés" gombra kattint</td><td>Toast értesítés: „Hozzáadva a mentett helyszínekhez"</td></tr>
+          </tbody>
+        </table>
+        <div class="flow-end">✓ Végállapot: Márton profilján megjelenik a helyszín, bármikor visszanézheti a részleteket.</div>
+      </div>
+    </div>
+
+    <!-- Persona 3 – Zsuzsanna -->
+    <div class="persona-card">
+      <div class="persona-header">
+        <div class="persona-avatar c">KZS</div>
+        <div class="persona-meta">
+          <h3>Kiss Zsuzsanna</h3>
+          <span>Persona 3 · Általános iskolai tanár · 45 év</span>
+        </div>
+      </div>
+      <div class="persona-body">
+        <div class="persona-grid">
+          <div class="info-box">
+            <div class="label">Foglalkozás</div>
+            <div class="value">Általános iskolai tanár, osztályprogramot szervez, nem regisztrált felhasználó</div>
+          </div>
+          <div class="info-box">
+            <div class="label">Cél</div>
+            <div class="value">Találni egy gyerekek számára megfelelő kulturális helyszínt Budapesten a szülőknek bemutatni</div>
+          </div>
+          <div class="info-box">
+            <div class="label">Kontextus</div>
+            <div class="value">Először jár az oldalon, nem akar regisztrálni csak azért, hogy megnyézzen néhány helyszínt</div>
+          </div>
+        </div>
+        <div class="pain-point">
+          <div class="label">Pain Point</div>
+          <div class="value">Nem tudja pontosan, mit kínál Budapest – nincs áttekintő listája a megfelelő, korosztálynak szóló helyszínekről, és nem szeretne regisztrálni minden egyes oldalra csak hogy megnézzen valamit.</div>
+        </div>
+
+        <div class="flow-header">
+          <span class="flow-badge">User Flow 3</span>
+          <span class="flow-state">Vendég böngészés és regisztráció mentéshez</span>
+        </div>
+        <div class="flow-state" style="margin-bottom:.65rem; font-size:.82rem; color:var(--muted)">
+          <strong>Kiindulóállapot:</strong> Zsuzsanna először nyitja meg az oldalt, nincs bejelentkezve.
+        </div>
+        <table class="flow-table">
+          <thead>
+            <tr><th>Lépés</th><th>Képernyő</th><th>Akció</th><th>Visszajelzés</th></tr>
+          </thead>
+          <tbody>
+            <tr><td><span class="step-num">1</span></td><td>Főoldal (guest)</td><td>Megérkezik az oldalra, látja a helyszínlistát</td><td>Teljes lista látható regisztráció nélkül is</td></tr>
+            <tr><td><span class="step-num">2</span></td><td>Főoldal</td><td>A keresőbe beírja: „gyerek"</td><td>Lista szűrődik a releváns helyszínekre</td></tr>
+            <tr><td><span class="step-num">3</span></td><td>Helyszín kártya</td><td>Megnyit egy helyszínt (pl. Csodák Palotája)</td><td>Részletes nézet betöltődik</td></tr>
+            <tr><td><span class="step-num">4</span></td><td>Helyszín részlet</td><td>A „Mentés" gombra kattint</td><td>Modal jelenik meg: „Mentéshez regisztrálj vagy lépj be!" — Primary: Regisztráció / Secondary: Bejelentkezés</td></tr>
+            <tr><td><span class="step-num">5</span></td><td>Regisztráció</td><td>Kitölti az e-mail + jelszó mezőt, elküldi</td><td>Sikeres regisztráció toast, visszairányítás a helyszínre, automatikusan mentve</td></tr>
+          </tbody>
+        </table>
+        <div class="flow-end">✓ Végállapot: Zsuzsanna regisztrált felhasználó, a helyszín mentve van a profiljában.</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ══════════════════════════════════════════════
+       2. ALKALMAZÁS VÁZ
+  ══════════════════════════════════════════════ -->
+  <section id="skeleton">
+    <h2 class="section-title">2. Teljes alkalmazás váz (Skeletonmap)</h2>
+    <p style="color:var(--muted); font-size:.88rem; margin-bottom:1.25rem">A personáktól független, az alkalmazás egészének oldalstruktúrája és navigációs hierarchiája.</p>
+
+    <div class="skeleton-tree">
+
+      <div class="route">
+        <span class="route-path">/</span>
+        <span class="route-name">Főoldal</span>
+        <span class="route-badge badge-public">Nyilvános</span>
+        <div class="tree-children">
+          <div class="tree-item">Hero szekció (keresőmező + stats)</div>
+          <div class="tree-item">Filter chip-ek (Összes / Zene / Kultúra / Sport / Éttermek)</div>
+          <div class="tree-item">Helyszínlista (VenueCard grid · szűrt + üres állapot kezelve)
+            <div class="tree-children">
+              <div class="tree-item sub">
+                <span class="route-path">/venue/:id</span>
+                <span class="route-name">Helyszín részlet</span>
+                <span class="route-badge badge-public">Nyilvános</span>
+                <div class="tree-children">
+                  <div class="tree-item">Borítókép, Cím, Kategória, Értékelés</div>
+                  <div class="tree-item">Nyitvatartás · Belépő · Leírás</div>
+                  <div class="tree-item">Térkép (Google Maps embed)</div>
+                  <div class="tree-item">♡ Mentés gomb → <em>Login-wall modal ha guest</em></div>
+                  <div class="tree-item">↗ Megosztás gomb → <em>Login-wall modal ha guest</em></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="route">
+        <span class="route-path">/login</span>
+        <span class="route-name">Bejelentkezés</span>
+        <span class="route-badge badge-public">Nyilvános</span>
+        <div class="tree-children">
+          <div class="tree-item">E-mail input · Jelszó input</div>
+          <div class="tree-item">Bejelentkezés gomb → Főoldal (auth)</div>
+          <div class="tree-item">Link: „Nincs fiókod? Regisztrálj"</div>
+          <div class="tree-item">Inline validáció: hibás credentials → hibaüzenet</div>
+        </div>
+      </div>
+
+      <div class="route">
+        <span class="route-path">/register</span>
+        <span class="route-name">Regisztráció</span>
+        <span class="route-badge badge-public">Nyilvános</span>
+        <div class="tree-children">
+          <div class="tree-item">Felhasználónév · E-mail · Jelszó input</div>
+          <div class="tree-item">Regisztráció gomb → Főoldal (auth)</div>
+          <div class="tree-item">Link: „Van már fiókod? Lépj be"</div>
+          <div class="tree-item">Inline validáció: e-mail formátum, jelszó hossz</div>
+        </div>
+      </div>
+
+      <div class="route">
+        <span class="route-path">/profile</span>
+        <span class="route-name">Profil</span>
+        <span class="route-badge badge-auth">Auth required</span>
+        <div class="tree-children">
+          <div class="tree-item">Avatar + Felhasználónév + E-mail + Szerepkör badge</div>
+          <div class="tree-item">Mentett helyszínek szekció (VenueCard grid)</div>
+          <div class="tree-item">♥ Mentés visszavonása minden kártyán</div>
+          <div class="tree-item">Empty state: ha nincs mentett helyszín → CTA gomb</div>
+          <div class="tree-item">Kijelentkezés gomb</div>
+        </div>
+      </div>
+
+      <div class="route">
+        <span class="route-path">/admin</span>
+        <span class="route-name">Admin panel</span>
+        <span class="route-badge badge-admin">Admin role</span>
+        <span class="route-badge badge-planned">Tervezett</span>
+        <div class="tree-children">
+          <div class="tree-item">Függőben lévő helyszínek listája</div>
+          <div class="tree-item">Jóváhagyás / Elutasítás akciók</div>
+          <div class="tree-item">Manuális helyszín feltöltés</div>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ══════════════════════════════════════════════
+       3. DRÓTVÁZ
+  ══════════════════════════════════════════════ -->
+  <section id="wireframes">
+    <h2 class="section-title">3. Low-Fidelity Drótváz</h2>
+    <p style="color:var(--muted); font-size:.88rem; margin-bottom:1.25rem">Az alkalmazás fő képernyőinek sematikus vázlata. A wireframe-ek tükrözik a megvalósított struktúrát és funkciókat.</p>
+
+    <div class="wireframes-grid">
+
+      <!-- Váz 1 – Főoldal -->
+      <div class="wf-card">
+        <div class="wf-title">Váz 1 – Főoldal (Guest / Auth)</div>
+        <div class="wf-frame">
+          <div class="wf-screen">
+            <div class="wf-navbar">
+              <span class="wf-logo">HaGeDu</span>
+              <div class="wf-nav-links">
+                <span class="wf-btn">Bejelentkezés</span>
+                <span class="wf-btn primary">Regisztráció</span>
+              </div>
+            </div>
+            <div class="wf-hero">
+              <div class="wf-hero-badge">🗺 Budapest</div>
+              <div class="wf-hero-title">Fedezd fel a város <span>legjobb eseményeit</span></div>
+              <div class="wf-search">🔍 &nbsp;Keresés helyszín neve alapján...</div>
+              <div class="wf-stats">
+                <div class="wf-stat"><strong>42</strong>Helyszín</div>
+                <div class="wf-stat"><strong>Budapest</strong>Városban</div>
+                <div class="wf-stat"><strong>Ingyenes</strong>Használat</div>
+              </div>
+            </div>
+            <div class="wf-content">
+              <div class="wf-section-header">
+                <span class="wf-section-title">Helyszínek</span>
+                <span class="wf-muted">42 találat</span>
+              </div>
+              <div class="wf-chips">
+                <span class="wf-chip active">Összes</span>
+                <span class="wf-chip">Zene</span>
+                <span class="wf-chip">Kultúra</span>
+                <span class="wf-chip">Sport</span>
+                <span class="wf-chip">Étterem</span>
+              </div>
+              <div class="wf-card-grid">
+                <div class="wf-venue-card">
+                  <div class="wf-img-placeholder">kép</div>
+                  <div class="wf-card-body">
+                    <div class="wf-card-name">A38 Hajó</div>
+                    <div class="wf-card-cat">Zene</div>
+                    <div class="wf-card-addr">📍 XI. ker.</div>
+                  </div>
+                  <div class="wf-card-footer"><span class="wf-heart">♡</span></div>
+                </div>
+                <div class="wf-venue-card">
+                  <div class="wf-img-placeholder">kép</div>
+                  <div class="wf-card-body">
+                    <div class="wf-card-name">Müpa Budapest</div>
+                    <div class="wf-card-cat">Kultúra</div>
+                    <div class="wf-card-addr">📍 IX. ker.</div>
+                  </div>
+                  <div class="wf-card-footer"><span class="wf-heart">♡</span></div>
+                </div>
+                <div class="wf-venue-card">
+                  <div class="wf-img-placeholder">kép</div>
+                  <div class="wf-card-body">
+                    <div class="wf-card-name">Akvárium</div>
+                    <div class="wf-card-cat">Zene</div>
+                    <div class="wf-card-addr">📍 V. ker.</div>
+                  </div>
+                  <div class="wf-card-footer"><span class="wf-heart">♡</span></div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="wf-notes">
+            <ul>
+              <li>♡ gomb: auth usernél azonnal ment, guestnél login-wall modal nyílik</li>
+              <li>Aktív filter chip kiemelve jelenik meg</li>
+              <li>Nincs találat esetén empty state kártya látható</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      <!-- Váz 2 – Helyszín részlet -->
+      <div class="wf-card">
+        <div class="wf-title">Váz 2 – Helyszín részlet</div>
+        <div class="wf-frame">
+          <div class="wf-screen">
+            <div class="wf-navbar">
+              <span class="wf-logo">HaGeDu</span>
+              <div class="wf-nav-links">
+                <span class="wf-btn">Profil</span>
+                <span class="wf-btn">Kilépés</span>
+              </div>
+            </div>
+            <div class="wf-back">← Vissza a listához</div>
+            <div class="wf-cover">[ Borítókép ]</div>
+            <div class="wf-detail-body">
+              <div class="wf-venue-name">
+                <span>A38 Hajó</span>
+                <span class="wf-rating">★ 4.8</span>
+              </div>
+              <div class="wf-muted" style="font-size:.7rem; margin-bottom:.4rem">Kategória: Zene / Koncert</div>
+              <div class="wf-meta-row">📍 1117 Budapest, Petőfi híd budai hídfő</div>
+              <div class="wf-meta-row">🕐 H-P: 20:00–04:00 | Sz-V: 18:00–04:00</div>
+              <div class="wf-meta-row">🎫 Belépő: 2 000 – 8 000 Ft</div>
+              <hr class="wf-divider">
+              <div style="font-size:.75rem; color:var(--muted); margin-bottom:.5rem">Az A38 Budapest egyik legismertebb kulturális és zenei hajója, ahol rendszeres koncerteket...</div>
+              <hr class="wf-divider">
+              <div class="wf-map">[ Térkép – Google Maps embed ]</div>
+              <div class="wf-action-row">
+                <span class="wf-btn primary">♡ Mentés</span>
+                <span class="wf-btn outline">↗ Megosztás</span>
+              </div>
+            </div>
+          </div>
+          <div class="wf-notes">
+            <ul>
+              <li>Mentett állapotban: ♡ → ♥, gomb szövege: „Mentve"</li>
+              <li>Megosztás gombra friend-selector modal jelenik meg</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      <!-- Váz 3 – Bejelentkezés -->
+      <div class="wf-card">
+        <div class="wf-title">Váz 3 – Bejelentkezés (+ hibaállapot)</div>
+        <div class="wf-frame">
+          <div class="wf-screen">
+            <div class="wf-navbar">
+              <span class="wf-logo">HaGeDu</span>
+              <span class="wf-btn primary">Regisztráció</span>
+            </div>
+            <div class="wf-form-wrap">
+              <div class="wf-form-card">
+                <div class="wf-form-title">Üdvözlünk vissza!</div>
+                <div class="wf-field">
+                  <label>E-mail cím</label>
+                  <div class="wf-input">anna@example.com</div>
+                </div>
+                <div class="wf-field">
+                  <label>Jelszó</label>
+                  <div class="wf-input error">••••••••</div>
+                  <div class="wf-error-msg">⚠ Hibás e-mail vagy jelszó</div>
+                </div>
+                <div class="wf-btn primary wf-form-btn">Bejelentkezés</div>
+                <div class="wf-form-link">Nincs fiókod? <a href="#">Regisztrálj itt</a></div>
+              </div>
+            </div>
+          </div>
+          <div class="wf-notes">
+            <ul>
+              <li>Üres mező és invalid e-mail formátum → inline hibaüzenet az input alatt</li>
+              <li>Sikeres login: spinner a gombban → redirect főoldalra</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      <!-- Váz 4 – Regisztráció -->
+      <div class="wf-card">
+        <div class="wf-title">Váz 4 – Regisztráció</div>
+        <div class="wf-frame">
+          <div class="wf-screen">
+            <div class="wf-navbar">
+              <span class="wf-logo">HaGeDu</span>
+              <span class="wf-btn">Bejelentkezés</span>
+            </div>
+            <div class="wf-form-wrap">
+              <div class="wf-form-card">
+                <div class="wf-form-title">Hozz létre fiókot!</div>
+                <div class="wf-field">
+                  <label>Felhasználónév</label>
+                  <div class="wf-input" style="color:#aaa">pl. kovacs_anna</div>
+                </div>
+                <div class="wf-field">
+                  <label>E-mail cím</label>
+                  <div class="wf-input" style="color:#aaa">pl. anna@example.com</div>
+                </div>
+                <div class="wf-field">
+                  <label>Jelszó</label>
+                  <div class="wf-input" style="color:#aaa">min. 6 karakter</div>
+                </div>
+                <div class="wf-btn primary wf-form-btn">Regisztráció</div>
+                <div class="wf-form-link">Van már fiókod? <a href="#">Lépj be itt</a></div>
+              </div>
+            </div>
+          </div>
+          <div class="wf-notes">
+            <ul>
+              <li>E-mail formátum és jelszó hossz validálva submit előtt</li>
+              <li>Sikeres regisztráció: toast → redirect főoldalra</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      <!-- Váz 5 – Profil -->
+      <div class="wf-card">
+        <div class="wf-title">Váz 5 – Profil oldal</div>
+        <div class="wf-frame">
+          <div class="wf-screen">
+            <div class="wf-navbar">
+              <span class="wf-logo">HaGeDu</span>
+              <div class="wf-nav-links">
+                <span class="wf-btn primary">Profil</span>
+                <span class="wf-btn">Kilépés</span>
+              </div>
+            </div>
+            <div class="wf-content">
+              <div class="wf-profile-header">
+                <div class="wf-avatar">KA</div>
+                <div>
+                  <div class="wf-user-name">Kovács Anna</div>
+                  <div class="wf-user-email">anna@example.com</div>
+                  <div class="wf-user-badge">user</div>
+                </div>
+              </div>
+              <div class="wf-section-title" style="margin-bottom:.5rem">Mentett helyszínek</div>
+              <div class="wf-card-grid">
+                <div class="wf-venue-card">
+                  <div class="wf-img-placeholder">kép</div>
+                  <div class="wf-card-body">
+                    <div class="wf-card-name">A38 Hajó</div>
+                    <div class="wf-card-cat">Zene</div>
+                  </div>
+                  <div class="wf-card-footer"><span class="wf-heart" style="color:var(--primary)">♥</span></div>
+                </div>
+                <div class="wf-venue-card">
+                  <div class="wf-img-placeholder">kép</div>
+                  <div class="wf-card-body">
+                    <div class="wf-card-name">Müpa</div>
+                    <div class="wf-card-cat">Kultúra</div>
+                  </div>
+                  <div class="wf-card-footer"><span class="wf-heart" style="color:var(--primary)">♥</span></div>
+                </div>
+                <div class="wf-venue-card" style="display:flex;align-items:center;justify-content:center;height:80px;">
+                  <div style="text-align:center;color:#aaa;font-size:.68rem">empty<br>state</div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="wf-notes">
+            <ul>
+              <li>♥ kártyán kattintva: mentés visszavonása (kártya eltűnik a listáról)</li>
+              <li>Ha nincs mentett helyszín: empty state + „Helyszínek böngészése" CTA gomb</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      <!-- Váz 6 – Login-wall modal -->
+      <div class="wf-card">
+        <div class="wf-title">Váz 6 – Login-wall modal (Guest → Mentés)</div>
+        <div class="wf-frame">
+          <div class="wf-screen">
+            <div class="wf-navbar">
+              <span class="wf-logo">HaGeDu</span>
+              <div class="wf-nav-links">
+                <span class="wf-btn">Bejelentkezés</span>
+                <span class="wf-btn primary">Regisztráció</span>
+              </div>
+            </div>
+            <!-- Helyszín részlet blur mögött -->
+            <div class="wf-modal-wrap">
+              <div class="wf-modal-backdrop"></div>
+              <div style="opacity:.35; padding:.5rem .75rem; font-size:.72rem; color:#999; pointer-events:none">
+                [ A38 Hajó – részlet oldal háttérben... ]
+              </div>
+              <div class="wf-modal">
+                <span class="wf-modal-close">✕</span>
+                <div class="wf-modal-title">🔒 Bejelentkezés szükséges</div>
+                <div class="wf-modal-text">A helyszínek mentéséhez regisztrálj vagy lépj be!</div>
+                <div class="wf-modal-actions">
+                  <span class="wf-btn primary" style="text-align:center;padding:.4rem">Regisztráció</span>
+                  <span class="wf-btn outline" style="text-align:center;padding:.4rem">Bejelentkezés</span>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="wf-notes">
+            <ul>
+              <li>Háttér homályos (backdrop-filter blur)</li>
+              <li>Primary: Regisztráció → /register | Secondary: Bejelentkezés → /login</li>
+              <li>✕ gombra modal bezárul, felhasználó a helyszín oldalon marad</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ══════════════════════════════════════════════
+       4. CHECKLIST
+  ══════════════════════════════════════════════ -->
+  <section id="checklist">
+    <h2 class="section-title">4. Checklist validáció</h2>
+    <p style="color:var(--muted); font-size:.88rem; margin-bottom:1.75rem">Mind a 3 User Flow validálva a feladatleírás checklistje alapján.</p>
+
+    <!-- Flow 1 -->
+    <div class="flow-checklist-section">
+      <div class="flow-checklist-title">
+        <span class="flow-badge">Flow 1</span>
+        <span class="badge-persona badge-anna">Anna</span>
+        Helyszín keresése és megosztása baráttal
+      </div>
+      <div class="checklist-grid">
+        <div class="checklist-card">
+          <div class="checklist-card-header p">Persona & probléma</div>
+          <div class="checklist-item"><span class="check-icon">✅</span><div><div class="check-label">A persona célja és kontextusa egyértelmű, a Pain Point konkrét és reális</div><div class="check-note">Anna szocializációs igénye és a szétszórt platformok problémája valós és jól definiált</div></div></div>
+          <div class="checklist-item"><span class="check-icon">✅</span><div><div class="check-label">A User Flow a felhasználói szempontok megoldásának fókuszál, összehangolt a persona céljával</div><div class="check-note">A flow pontosan a közös program megtalálását és megosztását oldja meg</div></div></div>
+          <div class="checklist-item"><span class="check-icon">✅</span><div><div class="check-label">A Flow jól definiált kiindulóállapotból indul és végállapotba ér</div><div class="check-note">Kezdet: főoldalon van (auth); Vég: barátnak elküldve</div></div></div>
+        </div>
+        <div class="checklist-card">
+          <div class="checklist-card-header f">Funkció & logika</div>
+          <div class="checklist-item"><span class="check-icon">✅</span><div><div class="check-label">Tartalmazza a szükséges funkciókat, lépések logikusan következnek egymásból</div><div class="check-note">Keresés → Szűrés → Részlet → Mentés → Megosztás lineáris sorrend</div></div></div>
+          <div class="checklist-item"><span class="check-icon">✅</span><div><div class="check-label">Multi-step folyamatnál visszajelzés, haladás érzékelhető</div><div class="check-note">Filter aktiválás vizuális, mentés toast, megosztás confirm</div></div></div>
+          <div class="checklist-item"><span class="check-icon">✅</span><div><div class="check-label">Inputok, Primary/Secondary akciók megkülönböztethetők</div><div class="check-note">Keresőmező + filter chip + Mentés (primary) + Megosztás (secondary)</div></div></div>
+        </div>
+        <div class="checklist-card">
+          <div class="checklist-card-header v">Visszajelzés & állapotok</div>
+          <div class="checklist-item"><span class="check-icon">✅</span><div><div class="check-label">A rendszer jelzi az állapotváltozásokat</div><div class="check-note">Szűrés után lista frissül; mentés után szív ikon teli lesz</div></div></div>
+          <div class="checklist-item"><span class="check-icon">✅</span><div><div class="check-label">Input validáció megjelenik</div><div class="check-note">Keresőnél nincs találat esetén „Nincs találat" empty state jelenik meg</div></div></div>
+          <div class="checklist-item"><span class="check-icon">✅</span><div><div class="check-label">Siker/hiba üzenet az érintett elemen látható</div><div class="check-note">Toast: „Mentve a profilodba" + „Elküldve Péternek"</div></div></div>
+          <div class="checklist-item"><span class="check-icon">✅</span><div><div class="check-label">Fontos állapotok biztosítottak a hierarchiában</div><div class="check-note">Guest ≠ Auth állapot különbözően kezelt (login-wall modal)</div></div></div>
+        </div>
+        <div class="checklist-card">
+          <div class="checklist-card-header s">Struktúra & hierarchia</div>
+          <div class="checklist-item"><span class="check-icon">✅</span><div><div class="check-label">Információ és funkciók hierarchiája egyértelmű</div><div class="check-note">Főoldal → Kártya → Részlet oldal egyértelmű mélységi struktúra</div></div></div>
+          <div class="checklist-item"><span class="check-icon">✅</span><div><div class="check-label">Layout, flow és kapcsolódó elemek struktúrája átlátható</div><div class="check-note">Drótvázon látható az elrendezés és elemkapcsolatok</div></div></div>
+          <div class="checklist-item"><span class="check-icon">✅</span><div><div class="check-label">Wireframe tükrözi az alkalmazás kommunikációs struktúráját</div><div class="check-note">Navbar, tartalom, akció gombok konzisztensek minden vázon</div></div></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Flow 2 -->
+    <div class="flow-checklist-section">
+      <div class="flow-checklist-title">
+        <span class="flow-badge">Flow 2</span>
+        <span class="badge-persona badge-marton">Márton</span>
+        Gyors programkeresés kategória alapján
+      </div>
+      <div class="checklist-grid">
+        <div class="checklist-card">
+          <div class="checklist-card-header p">Persona & probléma</div>
+          <div class="checklist-item"><span class="check-icon">✅</span><div><div class="check-label">Pain Point konkrét és reális</div><div class="check-note">Több platform böngészése időigényes – valós probléma foglalkoztatott embereknél</div></div></div>
+          <div class="checklist-item"><span class="check-icon">✅</span><div><div class="check-label">Flow összehangolt a persona céljával</div><div class="check-note">Login → Szűrés → Részlet → Mentés pontosan Márton igényét adresszálja</div></div></div>
+          <div class="checklist-item"><span class="check-icon">✅</span><div><div class="check-label">Definiált kezdő- és végállapot</div><div class="check-note">Kezdet: login oldal; Vég: helyszín mentve profilban</div></div></div>
+        </div>
+        <div class="checklist-card">
+          <div class="checklist-card-header f">Funkció & logika</div>
+          <div class="checklist-item"><span class="check-icon">✅</span><div><div class="check-label">Szükséges funkciók megvannak, lépések logikusak</div><div class="check-note">Bejelentkezés → Kategória szűrés → Helyszín megtekintés → Mentés</div></div></div>
+          <div class="checklist-item"><span class="check-icon">✅</span><div><div class="check-label">Visszajelzés minden kritikus ponton</div><div class="check-note">Login spinner, szűrés vizuális, térkép betöltés, mentés toast</div></div></div>
+          <div class="checklist-item"><span class="check-icon">✅</span><div><div class="check-label">Primary/Secondary akciók elkülönítve</div><div class="check-note">„Mentés" = primary gomb; „Megosztás" = secondary/outline</div></div></div>
+        </div>
+        <div class="checklist-card">
+          <div class="checklist-card-header v">Visszajelzés & állapotok</div>
+          <div class="checklist-item"><span class="check-icon">✅</span><div><div class="check-label">Állapotváltozások jelzése</div><div class="check-note">Betöltés → Lista → Részlet nézet állapotai jól elkülöníthetők</div></div></div>
+          <div class="checklist-item"><span class="check-icon">✅</span><div><div class="check-label">Input validáció</div><div class="check-note">Login formon invalid e-mail / üres jelszó inline hibaüzenettel kezelve</div></div></div>
+          <div class="checklist-item"><span class="check-icon">✅</span><div><div class="check-label">Siker/hiba üzenet</div><div class="check-note">Hibás login: inline hibaüzenet; sikeres login: redirect főoldalra</div></div></div>
+          <div class="checklist-item"><span class="check-icon">✅</span><div><div class="check-label">Állapotok biztosítottak</div><div class="check-note">Loading, error, empty, filled állapotok kezelve a helyszínlistán</div></div></div>
+        </div>
+        <div class="checklist-card">
+          <div class="checklist-card-header s">Struktúra & hierarchia</div>
+          <div class="checklist-item"><span class="check-icon">✅</span><div><div class="check-label">Hierarchia egyértelmű</div><div class="check-note">Navbar > Szekció > Kártya grid > Részlet oldal</div></div></div>
+          <div class="checklist-item"><span class="check-icon">✅</span><div><div class="check-label">Layout átlátható</div><div class="check-note">Drótvázon konzisztens felső navigáció + tartalom + akciók</div></div></div>
+          <div class="checklist-item"><span class="check-icon">✅</span><div><div class="check-label">Wireframe tükrözi a struktúrát</div><div class="check-note">Minden vázlaton azonos navigáció és tartalomterület</div></div></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Flow 3 -->
+    <div class="flow-checklist-section">
+      <div class="flow-checklist-title">
+        <span class="flow-badge">Flow 3</span>
+        <span class="badge-persona badge-zsuzsi">Zsuzsanna</span>
+        Vendég böngészés és regisztráció mentéshez
+      </div>
+      <div class="checklist-grid">
+        <div class="checklist-card">
+          <div class="checklist-card-header p">Persona & probléma</div>
+          <div class="checklist-item"><span class="check-icon">✅</span><div><div class="check-label">Pain Point konkrét és reális</div><div class="check-note">Regisztráció nélküli böngészés igénye valós – nem akar minden oldalra regisztrálni</div></div></div>
+          <div class="checklist-item"><span class="check-icon">✅</span><div><div class="check-label">Flow összehangolt a persona céljával</div><div class="check-note">Guest → Keresés → Részlet → Login-wall → Regisztráció → Mentés</div></div></div>
+          <div class="checklist-item"><span class="check-icon">✅</span><div><div class="check-label">Definiált kezdő- és végállapot</div><div class="check-note">Kezdet: ismeretlen vendég; Vég: regisztrált user, helyszín mentve</div></div></div>
+        </div>
+        <div class="checklist-card">
+          <div class="checklist-card-header f">Funkció & logika</div>
+          <div class="checklist-item"><span class="check-icon">✅</span><div><div class="check-label">Szükséges funkciók megvannak</div><div class="check-note">Nyilvános böngészés + fokozatos regisztrációra ösztönzés (progressive disclosure)</div></div></div>
+          <div class="checklist-item"><span class="check-icon">✅</span><div><div class="check-label">Visszajelzés haladásról</div><div class="check-note">Modal egyértelműen jelzi mi szükséges a mentéshez</div></div></div>
+          <div class="checklist-item"><span class="check-icon">✅</span><div><div class="check-label">Primary/Secondary megkülönböztethető</div><div class="check-note">Modal: „Regisztráció" = primary, „Bejelentkezés" = secondary/outline</div></div></div>
+        </div>
+        <div class="checklist-card">
+          <div class="checklist-card-header v">Visszajelzés & állapotok</div>
+          <div class="checklist-item"><span class="check-icon">✅</span><div><div class="check-label">Állapotváltozások jelzése</div><div class="check-note">Guest → Auth állapotváltás modal + redirect + automatikus mentés</div></div></div>
+          <div class="checklist-item"><span class="check-icon">✅</span><div><div class="check-label">Input validáció</div><div class="check-note">Regisztrációs form: e-mail formátum, jelszó hossz ellenőrzés inline</div></div></div>
+          <div class="checklist-item"><span class="check-icon">✅</span><div><div class="check-label">Siker/hiba üzenet</div><div class="check-note">Sikeres regisztráció: toast + automatikus mentés visszajelzéssel</div></div></div>
+          <div class="checklist-item"><span class="check-icon">✅</span><div><div class="check-label">Állapotok biztosítottak</div><div class="check-note">Guest nézet, Login-wall modal, Auth nézet egyértelműen elkülönül</div></div></div>
+        </div>
+        <div class="checklist-card">
+          <div class="checklist-card-header s">Struktúra & hierarchia</div>
+          <div class="checklist-item"><span class="check-icon">✅</span><div><div class="check-label">Hierarchia egyértelmű</div><div class="check-note">Guest esetén korlátozott navbar (Login / Register), Auth esetén teljes</div></div></div>
+          <div class="checklist-item"><span class="check-icon">✅</span><div><div class="check-label">Layout átlátható</div><div class="check-note">Login-wall modal a helyszín részlet fölé jelenik meg, nincs oldalváltás</div></div></div>
+          <div class="checklist-item"><span class="check-icon">✅</span><div><div class="check-label">Wireframe tükrözi a struktúrát</div><div class="check-note">Modal vázon látható a backdrop + akciók hierarchiája</div></div></div>
+        </div>
+      </div>
+    </div>
+
+  </section>
+
+</main>
+
+<footer>
+  HaGeDu UX Design Dokumentum · v1.0 · 2026. április
+</footer>
+
+<script>
+  // Aktív tab kiemelése görgetés alapján
+  const sections = document.querySelectorAll('section[id]');
+  const navLinks = document.querySelectorAll('nav.tabs a');
+  window.addEventListener('scroll', () => {
+    let current = '';
+    sections.forEach(s => {
+      if (window.scrollY >= s.offsetTop - 100) current = s.id;
+    });
+    navLinks.forEach(a => {
+      a.classList.toggle('active', a.getAttribute('href') === '#' + current);
+    });
+  });
+</script>
+
+</body>
+</html>

@@ -1,20 +1,21 @@
 <template>
   <div class="auth-page">
-    <div class="auth-card">
-      <h1 class="auth-title">Regisztráció</h1>
-      <p class="auth-sub">Hozz létre fiókot az összes funkció eléréséhez.</p>
+    <section class="auth-card">
+      <div class="auth-mark" aria-hidden="true">A</div>
+      <h1>Regisztráció</h1>
+      <p class="auth-sub">Hozz létre fiókot a mentett helyszínekhez.</p>
 
-      <div v-if="error"   class="alert alert-error">{{ error }}</div>
+      <div v-if="error" class="alert alert-error">{{ error }}</div>
       <div v-if="success" class="alert alert-success">{{ success }}</div>
 
-      <form @submit.prevent="handleRegister" class="auth-form" novalidate>
+      <form class="auth-form" @submit.prevent="handleRegister" novalidate>
         <div class="form-group">
           <label for="username">Felhasználónév</label>
           <input
             id="username"
             v-model="form.username"
             type="text"
-            placeholder="pl. kovacs_janos"
+            placeholder="kovacs_istvan"
             autocomplete="username"
             required
           />
@@ -26,27 +27,27 @@
             id="email"
             v-model="form.email"
             type="email"
-            placeholder="pelda@email.hu"
+            placeholder="pelda@hagedu.hu"
             autocomplete="email"
             required
           />
         </div>
 
         <div class="form-group">
-          <label for="password">Jelszó</label>
-          <div class="input-wrap">
-            <input
-              id="password"
-              v-model="form.password"
-              :type="showPassword ? 'text' : 'password'"
-              placeholder="Minimum 6 karakter"
-              autocomplete="new-password"
-              required
-            />
-            <button type="button" class="toggle-pw" @click="showPassword = !showPassword">
-              {{ showPassword ? 'Elrejt' : 'Mutat' }}
+          <div class="label-row">
+            <label for="password">Jelszó</label>
+            <button type="button" class="text-button" @click="showPassword = !showPassword">
+              {{ showPassword ? 'Elrejtés' : 'Megjelenítés' }}
             </button>
           </div>
+          <input
+            id="password"
+            v-model="form.password"
+            :type="showPassword ? 'text' : 'password'"
+            placeholder="Minimum 6 karakter"
+            autocomplete="new-password"
+            required
+          />
           <span class="field-hint">Legalább 6 karakter.</span>
         </div>
 
@@ -59,34 +60,34 @@
         Már van fiókod?
         <RouterLink to="/login">Jelentkezz be</RouterLink>
       </p>
-    </div>
+    </section>
   </div>
 </template>
 
 <script setup>
-import { ref, reactive } from 'vue'
+import { reactive, ref } from 'vue'
 import { useRouter } from 'vue-router'
 import { register } from '../services/authService'
 
 const router = useRouter()
 
-const form         = reactive({ username: '', email: '', password: '' })
-const loading      = ref(false)
-const error        = ref(null)
-const success      = ref(null)
+const form = reactive({ username: '', email: '', password: '' })
+const loading = ref(false)
+const error = ref(null)
+const success = ref(null)
 const showPassword = ref(false)
 
 async function handleRegister() {
-  error.value   = null
+  error.value = null
   success.value = null
   loading.value = true
 
   try {
     await register(form.username.trim(), form.email.trim(), form.password)
-    success.value = 'Sikeres regisztráció! Átirányítás a bejelentkezéshez...'
+    success.value = 'Sikeres regisztráció. Átirányítás a bejelentkezéshez...'
     setTimeout(() => router.push('/login'), 1500)
   } catch (err) {
-    error.value = err.response?.data?.error || 'Regisztrációs hiba. Kérjük próbáld újra.'
+    error.value = err.response?.data?.error || 'Regisztrációs hiba. Próbáld újra.'
   } finally {
     loading.value = false
   }
@@ -96,77 +97,119 @@ async function handleRegister() {
 <style scoped>
 .auth-page {
   display: flex;
+  min-height: 660px;
+  align-items: center;
   justify-content: center;
-  align-items: flex-start;
-  padding: 2rem 1rem;
+  padding: 48px 20px;
+  background: var(--surface);
 }
 
 .auth-card {
-  background: var(--color-surface);
-  border: 1px solid var(--color-border);
-  border-radius: var(--radius);
-  box-shadow: var(--shadow-md);
-  padding: 2.25rem 2rem;
   width: 100%;
-  max-width: 420px;
+  max-width: 410px;
+  padding: 40px 44px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  background: var(--surface);
+  box-shadow: 0 24px 70px rgba(0, 0, 0, 0.06);
+  text-align: center;
 }
 
-.auth-title {
-  font-size: 1.5rem;
-  font-weight: 700;
-  margin-bottom: 0.35rem;
+.auth-mark {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 34px;
+  height: 34px;
+  margin-bottom: 16px;
+  border-radius: 50%;
+  color: var(--text);
+  font-size: 18px;
+  font-weight: 900;
+  position: relative;
+}
+
+.auth-mark::before,
+.auth-mark::after {
+  content: "";
+  position: absolute;
+  width: 2px;
+  height: 28px;
+  background: var(--text);
+}
+
+.auth-mark::before {
+  transform: rotate(28deg);
+}
+
+.auth-mark::after {
+  transform: rotate(-28deg);
+}
+
+.auth-card h1 {
+  color: var(--text);
+  font-size: 22px;
+  font-weight: 900;
 }
 
 .auth-sub {
-  color: var(--color-text-muted);
-  font-size: 0.9rem;
-  margin-bottom: 1.5rem;
+  margin: 5px 0 26px;
+  color: var(--text-muted);
+  font-size: 13px;
+  font-weight: 700;
 }
 
 .auth-form {
   display: flex;
   flex-direction: column;
-  gap: 1rem;
+  gap: 18px;
+  text-align: left;
 }
 
-.input-wrap {
-  position: relative;
+.label-row {
   display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
 }
 
-.input-wrap input {
-  flex: 1;
-  padding-right: 5rem;
-}
-
-.toggle-pw {
-  position: absolute;
-  right: 0.75rem;
-  top: 50%;
-  transform: translateY(-50%);
-  background: none;
-  border: none;
-  color: var(--color-primary);
-  font-size: 0.8rem;
-  font-weight: 500;
+.text-button {
+  border: 0;
+  background: transparent;
+  color: var(--text-muted);
   cursor: pointer;
-  padding: 0;
+  font-size: 10px;
+  font-weight: 900;
+  text-transform: uppercase;
 }
 
 .field-hint {
-  font-size: 0.78rem;
-  color: var(--color-text-muted);
+  color: var(--text-muted);
+  font-size: 11px;
+  font-weight: 700;
 }
 
 .btn-full {
   width: 100%;
-  margin-top: 0.5rem;
+  margin-top: 2px;
 }
 
 .auth-footer {
-  margin-top: 1.25rem;
-  text-align: center;
-  font-size: 0.875rem;
-  color: var(--color-text-muted);
+  margin-top: 24px;
+  color: var(--text-muted);
+  font-size: 12px;
+  font-weight: 700;
+}
+
+.auth-footer a {
+  color: var(--text);
+  font-weight: 900;
+  text-decoration: underline;
+}
+
+@media (max-width: 480px) {
+  .auth-card {
+    padding: 34px 24px;
+  }
 }
 </style>
